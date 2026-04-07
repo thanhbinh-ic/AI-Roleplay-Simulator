@@ -463,6 +463,8 @@ const appId =
   typeof __app_id !== "undefined" ? __app_id : "ai-text-adventure-simulator-vn";
 
 // Changelog Data
+const JSON_URL = "https://raw.githubusercontent.com/thanhbinh-ic/AI-Roleplay-Simulator/refs/heads/main/version.json";
+const CURRENT_VERSION = "2.4"; // Đổi khi update
 const changelogData = [
   {
     version: "2.4 (Hệ Thống & Ổn Định)",
@@ -632,6 +634,24 @@ const InitialScreen = (props) => (
         className="w-full flex items-center justify-center bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:scale-105 text-lg focus:outline-none focus:ring-4 focus:ring-teal-400 focus:ring-opacity-50"
       >
         <MegaphoneIcon /> Xem Cập Nhật Game
+      </button>
+      <button
+        onClick={() => props.handleManualCheckUpdate(true)}
+        className="w-full flex items-center justify-center bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:scale-105 text-lg focus:outline-none focus:ring-4 focus:ring-orange-400 focus:ring-opacity-50"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="w-6 h-6 mr-2"
+        >
+          <path
+            fillRule="evenodd"
+            d="M4.755 10.059a7.5 7.5 0 0112.548-3.364l1.903 1.903h-3.183a.75.75 0 100 1.5h4.992a.75.75 0 00.75-.75V4.356a.75.75 0 00-1.5 0v3.18l-1.9-1.9A9 9 0 003.306 9.642a.75.75 0 101.45.417zm14.49 3.882a7.5 7.5 0 01-12.548 3.364l-1.903-1.903h3.183a.75.75 0 100-1.5H2.989a.75.75 0 00-.75.75v4.992a.75.75 0 001.5 0v-3.18l1.9 1.9a9 9 0 0015.059-4.035.75.75 0 00-1.45-.417z"
+            clipRule="evenodd"
+          />
+        </svg>
+        Kiểm Tra Cập Nhật
       </button>
       <button
         onClick={() => {
@@ -2630,6 +2650,8 @@ const SuggestionsModal = ({
 
 // App Component
 const App = () => {
+  const [updateInfo, setUpdateInfo] = useState(null);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [currentScreen, setCurrentScreen] = useState("initial");
   const [apiKey, setApiKey] = useState("");
   const [apiMode, setApiMode] = useState("defaultGemini");
@@ -2779,6 +2801,33 @@ const App = () => {
       return () => clearTimeout(timer);
     }
   }, [currentScreen]);
+
+  //Check Update
+  const checkVersion = useCallback(async () => { 
+    try {
+      const response = await fetch(`${JSON_URL}?t=${new Date().getTime()}`);
+      if (!response.ok) return;
+
+      const data = await response.json();
+
+      const latestVer = data.version.split(" ")[0];
+      const currentVer = CURRENT_VERSION.split(" ")[0];
+
+      if (latestVer !== currentVer) {
+        setUpdateInfo(data);
+        setShowUpdateModal(true);
+        console.log("Phát hiện bản cập nhật mới:", latestVer);
+      } else {
+        console.log("Bạn đang dùng bản mới nhất.");
+      }
+    } catch (error) {
+      console.error("Lỗi kiểm tra phiên bản:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    checkVersion();
+  }, [checkVersion]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -3882,7 +3931,6 @@ const App = () => {
     isInitialCall = false,
     overrideGameId = null,
   ) => {
-    //binh
     const effectiveApiKey = apiMode === "defaultGemini" ? "" : apiKey;
     if (apiMode === "userKey" && !effectiveApiKey) {
       setModalMessage({
@@ -3978,12 +4026,11 @@ const App = () => {
         const newStoryEntry = { type: "story", content: story };
 
         setStoryHistory((prevStoryHistory) => {
-          //binh
           const updatedStoryHistory = [...prevStoryHistory, newStoryEntry];
           const idToUse = overrideGameId || currentGameId;
           if (idToUse) {
             saveGameProgress(
-              idToUse, // Sử dụng ID chính xác được truyền vào
+              idToUse,
               story,
               newChoices,
               updatedStoryHistory,
@@ -4104,7 +4151,7 @@ const App = () => {
       return;
     }
 
-    setCurrentGameId(null); //binh
+    setCurrentGameId(null);
     setGameOver({ isDead: false, reason: "" });
     setCurrentStory("");
     setChoices([]);
@@ -4240,7 +4287,7 @@ const App = () => {
         --- YÊU CẦU QUAN TRỌNG ---
             - Lời thoại trong ngoặc kép, tên NV đứng trước. Suy nghĩ trong *suy nghĩ* hoặc _suy nghĩ_. 
             - Sau khi kể xong diễn biến, Tuyệt đối KHÔNG được viết bất kỳ câu dẫn, câu hỏi, hoặc lời nhắn nào (ví dụ: "Ngươi sẽ làm gì?", "Hãy chọn...") sau lựa chọn cuối cùng.
-            - Lựa chọn cuối cùng phải là nội dung kết thúc toàn bộ phản hồi. 
+            - Kết thúc phản hồi CHỈ bằng danh sách lựa chọn.
             - Không sử dụng lời chào hay ký hiệu thừa ở cuối.
     `;
     setCurrentScreen("gameplay");
@@ -4269,7 +4316,7 @@ const App = () => {
           updatedAt: serverTimestamp(),
           status: "active",
         });
-        const newId = newGameRef.id; //binh
+        const newId = newGameRef.id;
         setCurrentGameId(newId);
         await callGeminiAPI(initialPrompt, true, newId);
       } catch (error) {
@@ -4430,7 +4477,7 @@ const App = () => {
         --- YÊU CẦU QUAN TRỌNG ---
             - Lời thoại trong ngoặc kép, tên NV đứng trước. Suy nghĩ trong *suy nghĩ* hoặc _suy nghĩ_. 
             - Sau khi kể xong diễn biến, Tuyệt đối KHÔNG được viết bất kỳ câu dẫn, câu hỏi, hoặc lời nhắn nào (ví dụ: "Ngươi sẽ làm gì?", "Hãy chọn...") sau lựa chọn cuối cùng.
-            - Lựa chọn cuối cùng phải là nội dung kết thúc toàn bộ phản hồi. 
+            - Kết thúc phản hồi CHỈ bằng danh sách lựa chọn. 
             - Không sử dụng lời chào hay ký hiệu thừa ở cuối.
     `;
     callGeminiAPI(subsequentPrompt);
@@ -4592,7 +4639,7 @@ const App = () => {
         --- YÊU CẦU QUAN TRỌNG ---
             - Lời thoại trong ngoặc kép, tên NV đứng trước. Suy nghĩ trong *suy nghĩ* hoặc _suy nghĩ_. 
             - Sau khi kể xong diễn biến, Tuyệt đối KHÔNG được viết bất kỳ câu dẫn, câu hỏi, hoặc lời nhắn nào (ví dụ: "Ngươi sẽ làm gì?", "Hãy chọn...") sau lựa chọn cuối cùng.
-            - Lựa chọn cuối cùng phải là nội dung kết thúc toàn bộ phản hồi. 
+            - Kết thúc phản hồi CHỈ bằng danh sách lựa chọn.
             - Không sử dụng lời chào hay ký hiệu thừa ở cuối.
     `;
     callGeminiAPI(subsequentPrompt);
@@ -5082,6 +5129,83 @@ const App = () => {
     document.body.removeChild(textArea);
   };
 
+  const UpdateModal = ({ show, data, onClose }) => {
+    if (!show || !data) return null;
+
+    const handleUpdateClick = () => {
+      const url = data.downloadUrl;
+      window.open(url, "_blank", "noopener,noreferrer");
+    };
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-[9999] p-4 backdrop-blur-sm">
+        <div className="bg-gray-900 border-2 border-yellow-500 rounded-xl max-w-md w-full p-6 shadow-[0_0_30px_rgba(234,179,8,0.4)] animate-in fade-in zoom-in duration-300">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-2xl font-bold text-yellow-500 flex items-center">
+              <span className="mr-2">🚀</span> Phiên Bản Mới!
+            </h2>
+            <span className="bg-yellow-500 text-black text-xs font-bold px-2 py-1 rounded">
+              v{data.version}
+            </span>
+          </div>
+          
+          <p className="text-gray-400 text-sm mb-4">Ngày cập nhật: {data.date}</p>
+          
+          <div className="bg-gray-800 rounded-lg p-4 mb-6 max-h-64 overflow-y-auto border border-gray-700">
+            <p className="text-white font-semibold mb-2 text-sm">Nội dung thay đổi:</p>
+            <ul className="space-y-2">
+              {data.changes.map((item, index) => (
+                <li key={index} className="text-gray-300 text-sm flex items-start">
+                  <span className="text-yellow-500 mr-2">•</span> {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={handleUpdateClick}
+              className="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-lg transition-all transform hover:scale-[1.02] active:scale-95 shadow-[0_0_15px_rgba(37,99,235,0.4)] flex items-center justify-center"
+            >
+              <span className="mr-2">⚡</span> CẬP NHẬT NGAY
+            </button>
+            <button
+              onClick={onClose}
+              className="w-full py-2 bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white text-sm font-medium rounded-lg transition-all border border-gray-700"
+            >
+              Đóng
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const handleManualCheckUpdate = useCallback(async () => {
+    await checkVersion();
+    try {
+      const response = await fetch(`${JSON_URL}?t=${new Date().getTime()}`);
+      const data = await response.json();
+      
+      if (data.version === CURRENT_VERSION) {
+        setModalMessage({
+          show: true,
+          title: "Thông báo",
+          content: "Bạn đang sử dụng phiên bản mới nhất (v" + CURRENT_VERSION + "). Chúc bạn chơi game vui vẻ!",
+          type: "success",
+        });
+      }
+    } catch (e) {
+      setModalMessage({
+        show: true,
+        title: "Thất bại",
+        content: "Không thể lấy thông tin cập nhật. Vui lòng kiểm tra lại kết nối mạng.",
+        type: "error",
+      });
+      console.error("Lỗi kiểm tra:", e);
+    }
+  }, [checkVersion]);
+
   const formatStoryText = useCallback(
     (text) => {
       if (!text) return null;
@@ -5242,6 +5366,7 @@ const App = () => {
           apiMode={apiMode}
           setShowUpdateLogModal={setShowUpdateLogModal}
           setShowDonationModal={setShowDonationModal}
+          handleManualCheckUpdate={handleManualCheckUpdate}
         />
       )}
       {currentScreen === "setup" && (
@@ -5482,6 +5607,11 @@ const App = () => {
         confirmText={confirmationModal.confirmText}
         cancelText={confirmationModal.cancelText}
         setConfirmationModal={setConfirmationModal}
+      />
+      <UpdateModal 
+        show={showUpdateModal} 
+        data={updateInfo} 
+        onClose={() => setShowUpdateModal(false)} 
       />
     </div>
   );
