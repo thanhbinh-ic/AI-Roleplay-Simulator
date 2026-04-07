@@ -1,3 +1,5 @@
+![Banner](https://github.com/thanhbinh-ic/AI-Roleplay-Simulator/blob/62e9ddd488ef7cda1f9e9fc79e30074f7ed4fbfe/docs/img/AI-Roleplay-Simulator.webp)
+
 # 🚀 AI Roleplay Simulator (AI-Powered RPG)
 
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
