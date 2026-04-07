@@ -27,9 +27,10 @@ Experience the simulator instantly or download the latest standalone version:
 - **Narrative Continuity:** Advanced memory management ensures the AI follows story logic, character traits, and past events.
 
 ### 🎲 Advanced Gameplay Mechanics
-- **Dice System:** A transparent rolling mechanism with 5 success tiers (Very Low to Very High), calculated based on character stats and current status.
-- **Quest System:** Real-time AI quest generation with a dedicated "Quest Log" to track objectives and rewards that impact the story.
-- **Nightmare Difficulty:** A hardcore mode for experienced players where wrong choices lead to severe, permanent consequences.
+- **Diverse Difficulty Levels:** From casual storytelling to "Nightmare" mode where every choice could be your last.
+- **Adult Content Support (18+):** Allows for extremely detailed, mature, and uncensored narratives for a truly unrestricted roleplaying experience.
+- **Dice System:** A transparent rolling mechanism with 5 success tiers, calculated based on character stats and current status.
+- **Quest System:** Real-time AI quest generation with a dedicated "Quest Log" to track objectives and rewards.
 
 ### 💾 Data & System Management
 - **Cloud & Local Saving:** Support for Firebase Firestore syncing or local `.json` file exports for cross-platform play.
