@@ -463,8 +463,8 @@ const appId =
   typeof __app_id !== "undefined" ? __app_id : "ai-text-adventure-simulator-vn";
 
 // Changelog Data
-const JSON_URL = "https://gist.githubusercontent.com/thanhbinh-ic/32c487755ae3e026caa0528d37d4e68c/raw/version.json";
-const CURRENT_VERSION = "2.4"; // Đổi khi update
+const JSON_URL = "https://raw.githubusercontent.com/thanhbinh-ic/AI-Roleplay-Simulator/refs/heads/main/version.json";
+const CURRENT_VERSION = "2.5"; // Đổi khi update
 const changelogData = [
   {
     version: "2.5 (Trải Nghiệm & Kết Nối)",
@@ -2662,10 +2662,8 @@ const SuggestionsModal = ({
 
 // App Component
 const App = () => {
-  //binh
   const [updateInfo, setUpdateInfo] = useState(null);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
-
   const [currentScreen, setCurrentScreen] = useState("initial");
   const [apiKey, setApiKey] = useState("");
   const [apiMode, setApiMode] = useState("defaultGemini");
@@ -2816,7 +2814,7 @@ const App = () => {
     }
   }, [currentScreen]);
 
-  //binh
+  //Check Update
   const checkVersion = useCallback(async () => { 
     try {
       const response = await fetch(`${JSON_URL}?t=${new Date().getTime()}`);
@@ -5143,7 +5141,6 @@ const App = () => {
     document.body.removeChild(textArea);
   };
 
-  //binh
   const UpdateModal = ({ show, data, onClose }) => {
     if (!show || !data) return null;
 
