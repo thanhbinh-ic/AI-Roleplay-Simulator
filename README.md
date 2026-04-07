@@ -1,4 +1,4 @@
-![Banner](https://github.com/thanhbinh-ic/AI-Roleplay-Simulator/blob/62e9ddd488ef7cda1f9e9fc79e30074f7ed4fbfe/docs/img/AI-Roleplay-Simulator.webp)
+![Banner](https://github.com/thanhbinh-ic/AI-Roleplay-Simulator/blob/6cae6fed33fdb13490df0b8c2c2f1212f505c1fd/docs/img/Banner.webp)
 
 # 🚀 AI Roleplay Simulator (AI-Powered RPG)
 
@@ -7,7 +7,7 @@
 ![Firebase](https://img.shields.io/badge/Firebase-039BE5?style=for-the-badge&logo=Firebase&logoColor=white)
 ![Gemini AI](https://img.shields.io/badge/Gemini_AI-4285F4?style=for-the-badge&logo=google-gemini&logoColor=white)
 
-**AI Roleplay Simulator** is a cutting-edge tabletop RPG simulation where Artificial Intelligence acts as your personal "Dungeon Master." The system dynamically generates worlds, characters, and branching storylines based on your unique creative inputs.
+**AI Roleplay Simulator** is an interactive text adventure game where Artificial Intelligence acts as your personal "Dungeon Master." The system dynamically generates worlds, characters, and branching storylines based on your unique creative inputs, offering a limitless storytelling experience.
 
 ---
 
@@ -50,7 +50,7 @@ Experience the simulator instantly or download the latest standalone version:
 
 | Main Menu | Gameplay Interface |
 | :---: | :---: |
-| ![Start](https://github.com/thanhbinh-ic/AI-Roleplay-Simulator/blob/3c534c3278a90d841756055ab2bb4bb8693442bd/docs/img/Main-Menu.png) | ![Gameplay](https://github.com/thanhbinh-ic/AI-Roleplay-Simulator/blob/3c534c3278a90d841756055ab2bb4bb8693442bd/docs/img/Gameplay-Interface.png) |
+| ![Start](https://github.com/thanhbinh-ic/AI-Roleplay-Simulator/blob/6cae6fed33fdb13490df0b8c2c2f1212f505c1fd/docs/img/Main-Menu.webp) | ![Gameplay](https://github.com/thanhbinh-ic/AI-Roleplay-Simulator/blob/6cae6fed33fdb13490df0b8c2c2f1212f505c1fd/docs/img/Gameplay-Interface.webp) |
 
 ---
 
