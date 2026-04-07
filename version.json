@@ -1,0 +1,12 @@
+{
+  version: "2.5 (Trải Nghiệm & Kết Nối)",
+  date: "07/04/2026",
+  changes: [
+    "QUAN TRỌNG: Khắc phục triệt để lỗi treo ứng dụng khi hệ thống kiểm tra phiên bản lúc khởi động.",
+    "THÊM MỚI: Nút 'Kiểm Tra Cập Nhật' tại màn hình chính, cho phép người chơi chủ động đồng bộ hóa với dữ liệu mới nhất từ máy chủ.",
+    "CẬP NHẬT HỆ THỐNG: Cơ chế điều hướng thông minh, tự động trỏ tới liên kết tải bản mới nhất.",
+    "GIAO DIỆN: Tối ưu hóa Popup thông báo với hiệu ứng làm mờ nền và hoạt ảnh chuyển động mượt mà.",
+    "TRẢI NGHIỆM: Tích hợp tham số chống lưu bộ nhớ đệm (Cache-Busting) để đảm bảo thông tin phiên bản luôn được cập nhật tức thì.",
+    "Cải thiện khả năng xử lý ngoại lệ khi kết nối API từ xa bị gián đoạn.",
+  ]
+}
