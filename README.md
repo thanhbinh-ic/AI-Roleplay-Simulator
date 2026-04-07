@@ -48,11 +48,9 @@ Experience the simulator instantly or download the latest standalone version:
 
 ## 📸 Screenshots
 
-*(Tip: Upload your screenshots to `docs/screenshots` and update the links below)*
-
 | Main Menu | Gameplay Interface |
 | :---: | :---: |
-| ![Start](https://via.placeholder.com/400x225?text=Main+Menu+Screen) | ![Gameplay](https://via.placeholder.com/400x225?text=Gameplay+Screen) |
+| ![Start](https://github.com/thanhbinh-ic/AI-Roleplay-Simulator/blob/3c534c3278a90d841756055ab2bb4bb8693442bd/docs/img/Main-Menu.png) | ![Gameplay](https://github.com/thanhbinh-ic/AI-Roleplay-Simulator/blob/3c534c3278a90d841756055ab2bb4bb8693442bd/docs/img/Gameplay-Interface.png) |
 
 ---
 
