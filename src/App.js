@@ -22,6 +22,11 @@ import {
   where,
 } from "firebase/firestore";
 
+/* eslint-disable no-undef */
+const __firebase_config = {};
+const __app_id = "";
+const __initial_auth_token = null;
+
 // Icons
 const PlayIcon = () => (
   <svg
