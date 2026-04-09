@@ -445,22 +445,19 @@ const DonCheckIcon = () => (
 
 // Firebase Config
 const firebaseConfig = //binh
-  typeof __firebase_config !== "undefined"
-    ? JSON.parse(__firebase_config)
-    : {
-        apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-        authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-        projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-        storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-        messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-        appId: process.env.REACT_APP_FIREBASE_APP_ID
-      };
+{
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID
+};
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const appId =
-  typeof __app_id !== "undefined" ? __app_id : "ai-text-adventure-simulator-vn";
+const appId = "ai-text-adventure-simulator-vn";
 
 // Changelog Data
 const JSON_URL = "https://raw.githubusercontent.com/thanhbinh-ic/AI-Roleplay-Simulator/refs/heads/main/version.json";
@@ -2862,24 +2859,6 @@ const App = () => {
             message:
               "Không cần API Key. Nội dung sẽ được tạo bởi AI của nền tảng.",
             color: "text-sky-400",
-          });
-        }
-      } else {
-        try {
-          if (
-            typeof __initial_auth_token !== "undefined" &&
-            __initial_auth_token
-          ) {
-            await signInWithCustomToken(auth, __initial_auth_token);
-          } else {
-            await signInAnonymously(auth);
-          }
-        } catch (error) {
-          console.error("Error during sign-in:", error);
-          setApiKeyStatus({
-            status: "Lỗi xác thực",
-            message: `Không thể xác thực: ${error.message}`,
-            color: "text-red-500",
           });
         }
       }
