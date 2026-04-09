@@ -22,11 +22,6 @@ import {
   where,
 } from "firebase/firestore";
 
-/* eslint-disable no-undef */
-const __firebase_config = {};
-const __app_id = "";
-const __initial_auth_token = null;
-
 // Icons
 const PlayIcon = () => (
   <svg
@@ -449,7 +444,7 @@ const DonCheckIcon = () => (
 );
 
 // Firebase Config
-const firebaseConfig =
+const firebaseConfig = //binh
   typeof __firebase_config !== "undefined"
     ? JSON.parse(__firebase_config)
     : {
@@ -2670,7 +2665,7 @@ const App = () => {
   const [updateInfo, setUpdateInfo] = useState(null);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [currentScreen, setCurrentScreen] = useState("initial");
-  const [apiKey, setApiKey] = useState("");
+  const [apiKey, setApiKey] = useState(process.env.REACT_APP_GEMINI_API_KEY || ""); //binh
   const [apiMode, setApiMode] = useState("defaultGemini");
   const [apiKeyStatus, setApiKeyStatus] = useState({
     status: "Đang dùng Gemini AI Mặc Định",
@@ -2851,7 +2846,7 @@ const App = () => {
       if (user) {
         setUserId(user.uid);
         const userApiKey = await loadApiKey(user.uid);
-        if (userApiKey) {
+        if (userApiKey && !process.env.REACT_APP_GEMINI_API_KEY) { //binh
           setApiKey(userApiKey);
           setInputApiKey(userApiKey);
           setApiMode("userKey");
@@ -4088,7 +4083,6 @@ const App = () => {
             "Lỗi từ API Gemini: Bạn đã gửi quá nhiều yêu cầu. Vui lòng thử lại sau.";
         }
         setCurrentStory(errorText);
-        // setChoices([]); //binh
         setStoryHistory((prev) => [
           ...prev,
           { type: "system", content: errorText },
@@ -4104,7 +4098,6 @@ const App = () => {
       console.error("Error calling Gemini API:", error);
       const networkError = `Lỗi kết nối đến Gemini API. Vui lòng kiểm tra kết nối mạng.`;
       setCurrentStory(networkError);
-      // setChoices([]); //binh
       setStoryHistory((prev) => [
         ...prev,
         { type: "system", content: networkError },
@@ -4355,7 +4348,6 @@ const App = () => {
     const userChoiceEntry = { type: "user_choice", content: choiceText };
     setStoryHistory((prev) => [...prev, userChoiceEntry]);
     setCurrentStory("");
-    //binh setChoices([]);
 
     const currentPersonality = gameSettings.characterPersonality;
     const characterGoal =
