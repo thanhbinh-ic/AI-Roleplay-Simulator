@@ -2724,7 +2724,7 @@ const App = () => {
 
   // Linh vật
   const GITHUB_RES_URL = "https://raw.githubusercontent.com/thanhbinh-ic/AI-Roleplay-Simulator/main/res/mascot";
-  const [mascotPos, setMascotPos] = useState({ bottom: 24, left: 24 }); // Vị trí mặc định
+  const [mascotPos, setMascotPos] = useState({ bottom: 24, right: 24 }); // Vị trí mặc định
   const [mascotId] = useState(Math.floor(Math.random() * 5)); // Random linh vật từ 0-4
   const [isMascotActive, setIsMascotActive] = useState(false); // Trạng thái đang diễn hoạt (nhảy)
   const [isMascotEvolved, setIsMascotEvolved] = useState(false); // Trạng thái đã "tiến hóa" (giữ ảnh 2)
@@ -5810,7 +5810,7 @@ const App = () => {
           </div>
         )}
 
-        {/* CON LINH VẬT */}
+        {/* // LINH VẬT */}
         {!user ? (
           <div className="relative group cursor-pointer" onClick={handleMascotClick}>
             {/* Vòng tròn tỏa sáng phía sau (Xanh lục quyền lực) */}
@@ -5822,7 +5822,7 @@ const App = () => {
               src={`${GITHUB_RES_URL}/${mascotId}_${(isMascotActive || isMascotEvolved) ? '2' : '1'}.gif`}
               alt="AI Mascot"
               // Tăng kích thước từ w-24 lên w-28 cho to hơn 1 chút
-              className={`w-28 h-28 object-contain transition-all duration-300 ${
+              className={`w-185 h-125 object-contain transition-all duration-300 ${
                 isMascotActive ? 'scale-125 brightness-110' : // Hiệu ứng lúc nhảy
                 isMascotEvolved ? 'brightness-105' : // Hiệu ứng sau khi tiến hóa
                 'hover:scale-110' // Hiệu ứng hover bình thường
