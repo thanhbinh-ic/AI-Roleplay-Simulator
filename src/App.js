@@ -3076,12 +3076,7 @@ const App = () => {
   };
 
   // Linh vật
-  const getMascotUrl = (id, type) => {
-    // type = 1 là tĩnh, type = 2 là hành động
-    return `${GITHUB_RES_URL}/${id}_${type}.gif`;
-  };
-
-  const handleMascotClick = () => {
+   const handleMascotClick = () => {
     // Nếu đã tiến hóa rồi thì chỉ mở Modal, không diễn hoạt lại nữa
     if (isMascotEvolved) {
       setIsLoginView(true);
