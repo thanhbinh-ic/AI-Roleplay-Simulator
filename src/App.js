@@ -5737,6 +5737,7 @@ const App = () => {
           🔑 TÀI KHOẢN
         </button>
       )}
+      {errorMsg && <p className="text-red-500 text-xs font-bold mb-4 animate-pulse">⚠️ {errorMsg}</p>}
       <SuggestionsModal
         show={showSuggestionsModal.show}
         title={showSuggestionsModal.title || "✨ Gợi Ý"}
@@ -5807,7 +5808,6 @@ const App = () => {
         setPassword={setPassword}
         isLoginView={isLoginView}
         setIsLoginView={setIsLoginView}
-        {errorMsg && <p className="text-red-500 text-xs font-bold mb-4 animate-pulse">⚠️ {errorMsg}</p>}
       />
     </div>
   );
