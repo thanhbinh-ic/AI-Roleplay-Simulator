@@ -2942,12 +2942,48 @@ const App = () => {
 
   // Hàm Đăng Ký (Dành cho người mới)
   const handleRegister = async () => {
+    // 1. Kiểm tra nhanh trước khi gửi yêu cầu lên Firebase (Tiết kiệm tài nguyên)
+    if (!email || !email.includes('@')) {
+      alert("Địa chỉ email không hợp lệ Đại Ca ơi, thiếu chữ @ kìa!");
+      return;
+    }
+    if (password.length < 6) {
+      alert("Mật khẩu quá ngắn! Phải từ 6 ký tự trở lên thì mới bảo mật được.");
+      return;
+    }
+
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      alert("Đăng ký thành công!");
+      
+      // Đăng ký thành công
+      alert("Đăng ký thành công! Chào mừng Đại Ca gia nhập thế giới.");
       console.log("Đại Ca đã tạo tài khoản mới:", userCredential.user.email);
+      
+      // Đóng Modal và Reset Form
+      setShowAuthModal(false);
+      // setEmail("");
+      // setPassword("");
+
     } catch (error) {
-      alert("Lỗi đăng ký: " + error.message);
+      // 2. Bắt lỗi từ Server Firebase trả về
+      console.error("Mã lỗi Firebase:", error.code);
+      
+      switch (error.code) {
+        case 'auth/email-already-in-use':
+          alert("Email này có người dùng rồi Đại Ca ơi, thử cái khác xem!");
+          break;
+        case 'auth/invalid-email':
+          alert("Email không đúng định dạng rồi, Đại Ca kiểm tra lại nhé.");
+          break;
+        case 'auth/weak-password':
+          alert("Mật khẩu này yếu quá, Google không cho phép đâu!");
+          break;
+        case 'auth/network-request-failed':
+          alert("Mạng yếu quá Đại Ca, kiểm tra lại kết nối nhé.");
+          break;
+        default:
+          alert("Lỗi lạ rồi: " + error.message);
+      }
     }
   };
 
