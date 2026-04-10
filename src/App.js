@@ -3111,7 +3111,7 @@ const App = () => {
     };
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${inputApiKey}`;
 
-    console.log("Giá trị Key đang dùng:", inputApiKey);
+    console.log("Giá trị Key đang dùng 1:", inputApiKey);
 
     try {
       const response = await fetch(apiUrl, {
@@ -3185,7 +3185,7 @@ const App = () => {
     };
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${effectiveApiKey}`;
 
-    console.log("Giá trị Key đang dùng:", effectiveApiKey);
+    console.log("Giá trị Key đang dùng 2:", effectiveApiKey);
 
     try {
       const response = await fetch(apiUrl, {
@@ -3985,7 +3985,7 @@ const App = () => {
     };
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${effectiveApiKey}`;
 
-    console.log("Giá trị Key đang dùng:", effectiveApiKey);
+    console.log("Giá trị Key đang dùng 3:", effectiveApiKey);
 
     try {
       const response = await fetch(apiUrl, {
