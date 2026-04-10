@@ -5795,53 +5795,64 @@ const App = () => {
       
 
       <div 
-        className="fixed z-[150] transition-all duration-500 ease-out"
+        // z-[999] để đè lên mọi thứ như Đại Ca muốn
+        className="fixed z-[999] transition-all duration-500 ease-out"
         style={{ 
           right: `${mascotPos.right}px`, 
           bottom: `${mascotPos.bottom}px` 
         }}
       >
-        {/* Lời nhắc của AI */}
+        {/* Lời nhắc của AI (Chỉ hiện khi chưa đăng nhập) */}
         {aiHint && !user && (
-          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 bg-white text-gray-900 text-xs font-bold px-3 py-2 rounded-2xl shadow-xl animate-bounce whitespace-nowrap border-2 border-green-500">
+          <div className="absolute bottom-full right-0 mb-4 bg-white text-gray-900 text-xs font-bold px-3 py-2 rounded-2xl shadow-xl animate-bounce whitespace-nowrap border-2 border-green-500">
             {aiHint}
             <div className="absolute -bottom-2 right-5 w-0 h-0 border-t-8 border-t-white border-x-8 border-x-transparent"></div>
           </div>
         )}
 
-        {/* // LINH VẬT */}
-        {!user ? (
-          <div className="relative group cursor-pointer" onClick={handleMascotClick}>
-            {/* Vòng tròn tỏa sáng phía sau (Xanh lục quyền lực) */}
-            <div className={`absolute inset-0 bg-green-500 rounded-full blur-2xl transition-opacity duration-1000 ${
-              isMascotEvolved ? 'opacity-40 animate-pulse' : 'opacity-10 group-hover:opacity-30'
-            }`}></div>
-            
-            <img 
-              src={`${GITHUB_RES_URL}/${mascotId}_${(isMascotActive || isMascotEvolved) ? '2' : '1'}.gif`}
-              alt="AI Mascot"
-              style={{
-                width: (isMascotActive || isMascotEvolved) ? '185px' : '100px',
-                height: (isMascotActive || isMascotEvolved) ? '115px' : '150px',
-              }}
-              className={`object-contain transition-all duration-500 ease-in-out cursor-pointer
-                ${isMascotActive ? 'brightness-110' : isMascotEvolved ? 'brightness-105' : ''}
-                /* Hiệu ứng hào quang vàng khi hover */
-                hover:drop-shadow-[0_0_15px_rgba(255,215,0,0.8)] 
-                hover:brightness-110
-              `}
-              onError={(e) => { e.target.src = "https://cdn-icons-png.flaticon.com/512/4712/4712035.png" }}
-            />
-          </div>
-        ) : (
-          /* Nút Đăng xuất đỏ tròn bên cạnh linh vật */
-          <button
-            onClick={() => { if(window.confirm("Đại Ca muốn thoát à?")) signOut(auth); }}
-            className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center border-2 border-red-400 shadow-[0_0_15px_rgba(220,38,38,0.5)] hover:scale-110 transition-all active:scale-95"
-          >
-            <span className="text-xl">🚪</span>
-          </button>
-        )}
+        {/* // LINH VẬT ĐÓNG VAI TRÒ NÚT TÀI KHOẢN / ĐĂNG XUẤT */}
+        <div 
+          className="relative group cursor-pointer" 
+          onClick={() => {
+            if (!user) {
+              handleMascotClick();
+            } else {
+              if(window.confirm("Đại Ca muốn rời mạng à?")) signOut(auth);
+            }
+          }}
+        >
+          {/* Hào quang phía sau: Xanh khi chưa login, Đỏ nhẹ khi đã login để báo hiệu nút thoát */}
+          <div className={`absolute inset-0 rounded-full blur-2xl transition-opacity duration-1000 ${
+            user 
+              ? 'bg-red-500 opacity-20 group-hover:opacity-40' 
+              : isMascotEvolved ? 'bg-green-500 opacity-40 animate-pulse' : 'bg-green-500 opacity-10 group-hover:opacity-30'
+          }`}></div>
+          
+          <img 
+            // Nếu đã có user HOẶC đang active HOẶC đã evolved thì dùng ảnh Dạng 2 (_2.gif)
+            src={`${GITHUB_RES_URL}/${mascotId}_${(user || isMascotActive || isMascotEvolved) ? '2' : '1'}.gif`}
+            alt="AI Mascot"
+            style={{
+              // Nếu là Dạng 2 (có user hoặc đã click) thì dùng size 185x115
+              width: (user || isMascotActive || isMascotEvolved) ? '185px' : '100px',
+              height: (user || isMascotActive || isMascotEvolved) ? '115px' : '150px',
+            }}
+            className={`object-contain transition-all duration-500 ease-in-out
+              ${(user || isMascotActive) ? 'brightness-110' : isMascotEvolved ? 'brightness-105' : ''}
+              /* Hào quang vàng rực rỡ khi hover đúng ý Đại Ca */
+              hover:drop-shadow-[0_0_20px_rgba(255,215,0,0.9)] 
+              hover:brightness-110
+            `}
+            onError={(e) => { e.target.src = "https://cdn-icons-png.flaticon.com/512/4712/4712035.png" }}
+          />
+
+          {/* Hiển thị thêm icon nhỏ để người dùng biết là bấm vào để thoát khi đã login */}
+          {user && (
+            <div className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] px-2 py-1 rounded-full border border-red-400 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
+              ĐĂNG XUẤT
+            </div>
+          )}
+        </div>
       </div>
 
       <SuggestionsModal
