@@ -5795,7 +5795,7 @@ const App = () => {
       
 
       <div 
-        className="fixed z-[100] transition-all duration-500 ease-out"
+        className="fixed z-[150] transition-all duration-500 ease-out"
         style={{ 
           right: `${mascotPos.right}px`, 
           bottom: `${mascotPos.bottom}px` 
