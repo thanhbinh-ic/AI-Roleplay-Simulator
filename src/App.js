@@ -3086,7 +3086,6 @@ const App = () => {
     // Mở Modal đăng nhập ngay lập tức
     setIsLoginView(true);
     setShowAuthModal(true);
-    setErrorMsg("");
 
     // Sau 1.5 giây thì con linh vật "đáp đất" và quay về trạng thái tĩnh
     setTimeout(() => {
@@ -5787,7 +5786,7 @@ const App = () => {
         </div>
       )}
       
-      
+
       <div 
         className="fixed z-[100] transition-all duration-500 ease-out"
         style={{ 
