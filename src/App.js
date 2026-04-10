@@ -2724,10 +2724,10 @@ const App = () => {
 
   // Linh vật
   const GITHUB_RES_URL = "https://raw.githubusercontent.com/thanhbinh-ic/AI-Roleplay-Simulator/main/res/mascot";
-  const [isMascotActive, setIsMascotActive] = useState(false);
   const [mascotPos, setMascotPos] = useState({ bottom: 24, left: 24 }); // Vị trí mặc định
-  // Đại Ca có thể chọn random từ 0-4 như trong code gốc
-  const [mascotId] = useState(Math.floor(Math.random() * 5));
+  const [mascotId] = useState(Math.floor(Math.random() * 5)); // Random linh vật từ 0-4
+  const [isMascotActive, setIsMascotActive] = useState(false); // Trạng thái đang diễn hoạt (nhảy)
+  const [isMascotEvolved, setIsMascotEvolved] = useState(false); // Trạng thái đã "tiến hóa" (giữ ảnh 2)
 
   const [apiMode, setApiMode] = useState("defaultGemini");
   const [apiKeyStatus, setApiKeyStatus] = useState({
@@ -3082,21 +3082,29 @@ const App = () => {
   };
 
   const handleMascotClick = () => {
-    if (isMascotActive) return; // Tránh bấm liên tục khi đang diễn hoạt
+    // Nếu đã tiến hóa rồi thì chỉ mở Modal, không diễn hoạt lại nữa
+    if (isMascotEvolved) {
+      setIsLoginView(true);
+      setShowAuthModal(true);
+      setErrorMsg("");
+      return;
+    }
 
+    // Khóa trạng thái để không bị bấm liên tục
     setIsMascotActive(true);
     
-    // Hiệu ứng "bay lên" một chút khi bấm vào
+    // Hiệu ứng "nhảy lên" (tăng bottom)
     setMascotPos(prev => ({ ...prev, bottom: prev.bottom + 40 }));
 
-    // Mở Modal đăng nhập ngay lập tức
+    // Mở Form
     setIsLoginView(true);
     setShowAuthModal(true);
 
-    // Sau 1.5 giây thì con linh vật "đáp đất" và quay về trạng thái tĩnh
+    // Sau 1.5 giây thì "đáp đất" và chuyển sang trạng thái đã tiến hóa
     setTimeout(() => {
       setMascotPos(prev => ({ ...prev, bottom: 24 }));
-      setIsMascotActive(false);
+      setIsMascotActive(false); // Hết diễn hoạt nhảy
+      setIsMascotEvolved(true); // Đánh dấu đã tiến hóa (giữ ảnh 2)
     }, 1500);
   };
 
@@ -5811,27 +5819,31 @@ const App = () => {
         {/* CON LINH VẬT */}
         {!user ? (
           <div className="relative group cursor-pointer" onClick={handleMascotClick}>
-          {/* Luôn có một vòng sáng xanh dịu phía sau con linh vật */}
-          <div className="absolute inset-0 bg-green-500 rounded-full blur-2xl opacity-20 group-hover:opacity-50 transition-all duration-500"></div>
-          
-          <img 
-            src={getMascotUrl(mascotId, isMascotActive ? 2 : 1)}
-            alt="AI Mascot"
-            className={`w-24 h-24 object-contain transition-all duration-300 ${
-              isMascotActive ? 'scale-125 brightness-110' : 'hover:scale-110'
-            }`}
-            // Phòng trường hợp ảnh lỗi thì hiện icon Robot thay thế
-            onError={(e) => { e.target.src = "https://cdn-icons-png.flaticon.com/512/4712/4712035.png" }}
-          />
-        </div>
-      ) : (
-        /* Nút Đăng xuất đỏ tròn bên cạnh */
-        <button
-          onClick={() => { if(window.confirm("Đại Ca muốn thoát à?")) signOut(auth); }}
-          className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center border-2 border-red-400 shadow-[0_0_15px_rgba(220,38,38,0.5)] hover:scale-110 transition-all"
-        >
-          <span className="text-xl">🚪</span>
-        </button>
+            {/* Vòng tròn tỏa sáng phía sau (Xanh lục quyền lực) */}
+            <div className={`absolute inset-0 bg-green-500 rounded-full blur-2xl transition-opacity duration-1000 ${
+              isMascotEvolved ? 'opacity-40 animate-pulse' : 'opacity-10 group-hover:opacity-30'
+            }`}></div>
+            
+            <img 
+              src={`${GITHUB_RES_URL}/${mascotId}_${(isMascotActive || isMascotEvolved) ? '2' : '1'}.gif`}
+              alt="AI Mascot"
+              // Tăng kích thước từ w-24 lên w-28 cho to hơn 1 chút
+              className={`w-28 h-28 object-contain transition-all duration-300 ${
+                isMascotActive ? 'scale-125 brightness-110' : // Hiệu ứng lúc nhảy
+                isMascotEvolved ? 'brightness-105' : // Hiệu ứng sau khi tiến hóa
+                'hover:scale-110' // Hiệu ứng hover bình thường
+              }`}
+              onError={(e) => { e.target.src = "https://cdn-icons-png.flaticon.com/512/4712/4712035.png" }}
+            />
+          </div>
+        ) : (
+          /* Nút Đăng xuất đỏ tròn bên cạnh linh vật */
+          <button
+            onClick={() => { if(window.confirm("Đại Ca muốn thoát à?")) signOut(auth); }}
+            className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center border-2 border-red-400 shadow-[0_0_15px_rgba(220,38,38,0.5)] hover:scale-110 transition-all active:scale-95"
+          >
+            <span className="text-xl">🚪</span>
+          </button>
         )}
       </div>
 
