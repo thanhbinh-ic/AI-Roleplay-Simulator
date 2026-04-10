@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { auth, db, googleProvider } from "./firebase";
-import { signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from "firebase/auth";
+import { 
+  getAuth, 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged 
+} from "firebase/auth";
+
 import './index.css';
 import {
   doc,
@@ -13,6 +20,15 @@ import {
   onSnapshot,
   query,
 } from "firebase/firestore";
+
+
+export const auth = getAuth(app); //binh
+export { 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged 
+};
 
 // Icons
 const PlayIcon = () => (
@@ -2641,6 +2657,9 @@ const App = () => {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [currentScreen, setCurrentScreen] = useState("initial");
   const [apiKey, setApiKey] = useState(process.env.REACT_APP_GEMINI_API_KEY || ""); //binh
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const [apiMode, setApiMode] = useState("defaultGemini");
   const [apiKeyStatus, setApiKeyStatus] = useState({
     status: "Đang dùng Gemini AI Mặc Định",
@@ -2859,27 +2878,25 @@ const App = () => {
     return () => unsubscribe();
   }, []);
 
-  // 2. Hàm xử lý bấm nút Đăng nhập
-  const handleLogin = async () => {
+  // Hàm Đăng Ký (Dành cho người mới)
+  const handleRegister = async () => {
     try {
-      await signInWithRedirect(auth, googleProvider);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      console.log("Đại Ca đã tạo tài khoản mới:", userCredential.user.email);
     } catch (error) {
-      console.error("Lỗi đăng nhập:", error.message);
+      alert("Lỗi đăng ký: " + error.message);
     }
   };
 
-  useEffect(() => {
-    getRedirectResult(auth)
-      .then((result) => {
-        if (result) {
-          const user = result.user;
-          setUser(user);
-          setUserId(user.uid);
-        }
-      }).catch((error) => {
-        console.error("Lỗi kết quả redirect:", error.code);
-      });
-  }, []);
+  // Hàm Đăng Nhập (Cho Đại Ca vào game)
+  const handleLogin = async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      console.log("Chào mừng Đại Ca trở lại:", userCredential.user.email);
+    } catch (error) {
+      alert("Sai email hoặc mật khẩu rồi Đại Ca ơi!");
+    }
+  };
 
   // 3. Hàm Đăng xuất
   const handleLogout = () => {
@@ -5577,22 +5594,30 @@ const App = () => {
           </div>
         </div>
       )}
-      {user ? (
-        <div className="flex items-center gap-3">
-          <img src={user.photoURL} alt="Avatar" className="w-8 h-8 rounded-full border border-yellow-500" />
-          <span className="text-white text-sm">{user.displayName}</span>
-          <button onClick={handleLogout} className="text-xs text-gray-400 hover:text-white underline">
-            Thoát
-          </button>
+      {!user ? (
+        <div className="flex flex-col gap-2 p-4 bg-gray-800 rounded-lg">
+          <input 
+            type="email" 
+            placeholder="Email của Đại Ca" 
+            className="p-2 rounded bg-gray-700 text-white"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input 
+            type="password" 
+            placeholder="Mật khẩu" 
+            className="p-2 rounded bg-gray-700 text-white"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <div className="flex gap-2">
+            <button onClick={handleLogin} className="bg-blue-600 px-4 py-2 rounded">Đăng Nhập</button>
+            <button onClick={handleRegister} className="bg-gray-600 px-4 py-2 rounded text-sm">Đăng Ký</button>
+          </div>
         </div>
       ) : (
-        <button 
-          onClick={handleLogin}
-          className="bg-white text-black px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-gray-200"
-        >
-          <img src="https://www.gstatic.com/firebase/explore/google.svg" className="w-5 h-5" alt="G" />
-          Đăng nhập bằng Google
-        </button>
+        <div>
+          <p>Đang dùng tài khoản: {user.email}</p>
+          <button onClick={() => signOut(auth)} className="text-red-400 underline">Đăng xuất</button>
+        </div>
       )}
       <SuggestionsModal
         show={showSuggestionsModal.show}
