@@ -2933,7 +2933,6 @@ const App = () => {
         setUserId(null);
         setUser(null);
         setApiMode("defaultGemini");
-        console.log("Trạng thái: Chưa đăng nhập");
       }
       setIsAuthReady(true);
     });
@@ -2991,10 +2990,50 @@ const App = () => {
   const handleLogin = async () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      alert("Chào mừng Đại Ca trở lại!");
       setShowAuthModal(false);
-      console.log("Chào mừng Đại Ca trở lại:", userCredential.user.email);
     } catch (error) {
       alert("Sai email hoặc mật khẩu rồi Đại Ca ơi!");
+    }
+  };
+
+  const handleLogin = async () => {
+    // 1. Kiểm tra nhanh đầu vào (Client-side validation)
+    if (!email || !password) {
+      alert("Đại Ca quên chưa nhập Email hoặc Mật khẩu kìa!");
+      return;
+    }
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      
+      // Đăng nhập thành công
+      alert("Chào mừng Đại Ca trở lại thế giới!");
+
+      setShowAuthModal(false);
+      setEmail("");
+      setPassword("");
+
+    } catch (error) {
+      // 2. Phân tích mã lỗi từ Firebase
+      console.error("Lỗi Login:", error.code);
+      
+      switch (error.code) {
+        case 'auth/user-not-found':
+          alert("Tài khoản này chưa đăng ký. Đại Ca chuyển sang tab Đăng Ký nhé!");
+          break;
+        case 'auth/user-disabled':
+          alert("Tài khoản này đã bị khóa. Liên hệ Admin để mở lại nhé Đại Ca!");
+          break;
+        case 'auth/too-many-requests':
+          alert("Đại Ca nhập sai nhiều quá, hệ thống tạm khóa để bảo mật. Đợi một lát nhé!");
+          break;
+        case 'auth/invalid-credential':
+          alert("Thông tin đăng nhập không chính xác. Đại Ca kiểm tra lại nhé!");
+          break;
+        default:
+          alert("Lỗi kết nối: " + error.message);
+      }
     }
   };
 
