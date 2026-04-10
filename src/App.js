@@ -2792,9 +2792,6 @@ const App = () => {
 
   //Scrool Down
   const storyEndRef = useRef(null);
-  const scrollToBottom = () => {
-    storyEndRef.current?.scrollIntoView({ behavior: "auto" });
-  };
 
   useEffect(() => {
     if (currentScreen === "gameplay") {
@@ -3578,14 +3575,17 @@ const App = () => {
       QUEST_ASSIGNED: "quests",
     };
 
+    let processedContent = storyContent; //binh
+    const allMatchesToRemove = [];
+
     for (const tagType in tagPatterns) {
       const regex = tagPatterns[tagType];
       let match;
-      const matchesToReplace = [];
 
-      while ((match = regex.exec(storyContent)) !== null) {
-        matchesToReplace.push(match[0]);
+      while ((match = regex.exec(processedContent)) !== null) {
+        allMatchesToRemove.push(match[0]);
         const dataString = match[1];
+
         try {
           if (tagType === "GAME_OVER") {
             const parsed = parseKeyValueString(dataString);
@@ -3640,24 +3640,21 @@ const App = () => {
               (categoryKey === "playerStatus" && parsedData.name) ||
               (categoryKey === "quests" && parsedData.title)
             ) {
-              const uniqueIdKey =
-                parsedData.Name ||
-                parsedData.NPC ||
-                parsedData.name ||
-                parsedData.title;
               let itemWithId = {
                 id: crypto.randomUUID(),
                 ...parsedData,
                 name: parsedData.name || parsedData.Name,
               };
 
-              if (categoryKey === "quests") {
-                itemWithId.objectives = parsedData.objectives
-                  ? parsedData.objectives.split(";").map((objText) => ({
-                      text: objText.trim(),
-                      completed: false,
-                    }))
-                  : [];
+              if (categoryMap[tagType] === "quests" && parsedData.objectives) { //binh
+                const objArray = parsedData.objectives.split(";");
+                const formattedObjectives = [];
+                for (let i = 0; i < objArray.length; i++) {
+                  formattedObjectives.push({
+                    text: objArray[i].trim(),
+                    completed: false,
+                  });
+                }
                 itemWithId.status = parsedData.status || "active";
               }
 
@@ -3686,11 +3683,13 @@ const App = () => {
           console.error(`Error parsing ${tagType} string:`, dataString, e);
         }
       }
-      matchesToReplace.forEach(
-        (matchStr) =>
-          (storyContent = storyContent.replace(matchStr, "").trim()),
-      );
     }
+
+    let finalStoryContent = processedContent; //binh
+    for (const matchStr of allMatchesToRemove) {
+      finalStoryContent = finalStoryContent.replace(matchStr, "");
+    }
+    storyContent = finalStoryContent.trim();
 
     if (newKnowledgeUpdates._isGameOver) {
       setGameOver(newKnowledgeUpdates._isGameOver);
