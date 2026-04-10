@@ -3088,7 +3088,7 @@ const App = () => {
     setIsMascotActive(true);
     
     // Hiệu ứng "nhảy lên" (tăng bottom)
-    setMascotPos(prev => ({ ...prev, bottom: prev.bottom + 40 }));
+    setMascotPos(prev => ({ ...prev, bottom: prev.bottom }));
 
     // Mở Form
     setIsLoginView(true);
