@@ -3101,6 +3101,27 @@ const App = () => {
     }, 1500);
   };
 
+  // 1. Hàm đóng Popup Login
+  const closeAuthModal = () => {
+    setShowAuthModal(false);
+    // Nếu chưa đăng nhập mà đóng popup, trả linh vật về Dạng 1
+    if (!user) {
+      setIsMascotEvolved(false);
+      setIsMascotActive(false);
+    }
+  };
+
+  // 2. Hàm Đăng xuất
+  const handleSignOut = () => {
+    if (window.confirm("Đại Ca muốn rời mạng thật à?")) {
+      signOut(auth).then(() => {
+        // Đăng xuất xong, trả linh vật về Dạng 1 ngay
+        setIsMascotEvolved(false);
+        setIsMascotActive(false);
+      });
+    }
+  };
+  
   useEffect(() => {
     if (isAuthReady && userId) {
       const gamesCollectionPath = `artifacts/${appId}/users/${userId}/games`;
@@ -5795,79 +5816,53 @@ const App = () => {
       
 
       <div 
-        // z-[999] để đè lên mọi thứ như Đại Ca muốn
         className="fixed z-[999] transition-all duration-500 ease-out"
         style={{ 
           right: `${mascotPos.right}px`, 
           bottom: `${mascotPos.bottom}px` 
         }}
       >
-        {/* Lời nhắc của AI (Chỉ hiện khi chưa đăng nhập) */}
+        {/* Lời nhắc của AI */}
         {aiHint && !user && (
-        <div className="absolute bottom-full right-0 mb-4 z-[1000]">
-          {/* Bong bóng thoại dùng tỷ lệ linh hoạt */}
-          <div className="bg-white text-gray-900 text-[10px] sm:text-xs font-bold px-4 py-2 rounded-2xl shadow-xl border-2 border-green-500 
-                          /* Giới hạn rộng tối đa 40% chiều rộng màn hình, tối thiểu 120px và tối đa 250px */
-                          max-w-[40vw] min-w-[120px] lg:max-w-[250px]
-                          w-max break-words text-center leading-tight animate-bounce relative">
-            
-            {aiHint}
-            
-            {/* Cái đuôi bong bóng thoại */}
-            <div className="absolute -bottom-2 right-6 w-0 h-0 
-                            border-t-[10px] border-t-white 
-                            border-x-[8px] border-x-transparent"></div>
-            
-            {/* Viền cho cái đuôi */}
-            <div className="absolute -bottom-[11px] right-[23px] w-0 h-0 
-                            border-t-[11px] border-t-green-500 
-                            border-x-[9px] border-x-transparent -z-10"></div>
+          <div className="absolute bottom-full right-0 mb-4 z-[1000]">
+            <div className="bg-white text-gray-900 text-[10px] sm:text-xs font-bold px-4 py-2 rounded-2xl shadow-xl border-2 border-green-500 
+                            max-w-[40vw] min-w-[120px] lg:max-w-[250px]
+                            w-max break-words text-center leading-tight animate-bounce relative">
+              {aiHint}
+              <div className="absolute -bottom-2 right-6 w-0 h-0 border-t-[10px] border-t-white border-x-[8px] border-x-transparent"></div>
+              <div className="absolute -bottom-[11px] right-[23px] w-0 h-0 border-t-[11px] border-t-green-500 border-x-[9px] border-x-transparent -z-10"></div>
+            </div>
           </div>
-        </div>
         )}
 
-        {/* // LINH VẬT ĐÓNG VAI TRÒ NÚT TÀI KHOẢN / ĐĂNG XUẤT */}
+        {/* LINH VẬT BIẾN HÌNH LINH HOẠT */}
         <div 
           className="relative group cursor-pointer" 
           onClick={() => {
-            if (!user) {
-              handleMascotClick();
-            } else {
-              if(window.confirm("Đại Ca muốn rời mạng à?")) signOut(auth);
-            }
+            if (!user) handleMascotClick(); // Gọi hàm nhảy và đổi dạng
+            else handleSignOut(); // Gọi hàm đăng xuất đã sửa ở trên
           }}
         >
-          {/* Hào quang phía sau: Xanh khi chưa login, Đỏ nhẹ khi đã login để báo hiệu nút thoát */}
+          {/* Hào quang vàng rực rỡ khi hover */}
           <div className={`absolute inset-0 rounded-full blur-2xl transition-opacity duration-1000 ${
-            user 
-              ? 'bg-red-500 opacity-20 group-hover:opacity-40' 
-              : isMascotEvolved ? 'bg-green-500 opacity-40 animate-pulse' : 'bg-green-500 opacity-10 group-hover:opacity-30'
+            (isMascotActive || isMascotEvolved || user) ? 'bg-yellow-400 opacity-30 animate-pulse' : 'bg-green-500 opacity-10 group-hover:opacity-30'
           }`}></div>
           
           <img 
-            // Nếu đã có user HOẶC đang active HOẶC đã evolved thì dùng ảnh Dạng 2 (_2.gif)
-            src={`${GITHUB_RES_URL}/${mascotId}_${(user || isMascotActive || isMascotEvolved) ? '2' : '1'}.gif`}
+            src={`${GITHUB_RES_URL}/${mascotId}_${(isMascotActive || isMascotEvolved || user) ? '2' : '1'}.gif`}
             alt="AI Mascot"
             style={{
-              // Nếu là Dạng 2 (có user hoặc đã click) thì dùng size 185x115
-              width: (user || isMascotActive || isMascotEvolved) ? '185px' : '100px',
-              height: (user || isMascotActive || isMascotEvolved) ? '115px' : '150px',
+              // Tỷ lệ chuẩn Đại Ca yêu cầu: Dạng 1 (100x150), Dạng 2 (185x115)
+              width: (isMascotActive || isMascotEvolved || user) ? '185px' : '100px',
+              height: (isMascotActive || isMascotEvolved || user) ? '115px' : '150px',
             }}
             className={`object-contain transition-all duration-500 ease-in-out
-              ${(user || isMascotActive) ? 'brightness-110' : isMascotEvolved ? 'brightness-105' : ''}
-              /* Hào quang vàng rực rỡ khi hover đúng ý Đại Ca */
+              ${(isMascotActive || user) ? 'brightness-110' : ''}
               hover:drop-shadow-[0_0_20px_rgba(255,215,0,0.9)] 
               hover:brightness-110
             `}
             onError={(e) => { e.target.src = "https://cdn-icons-png.flaticon.com/512/4712/4712035.png" }}
           />
-
-          {/* Hiển thị thêm icon nhỏ để người dùng biết là bấm vào để thoát khi đã login */}
-          {user && (
-            <div className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] px-2 py-1 rounded-full border border-red-400 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
-              ĐĂNG XUẤT
-            </div>
-          )}
         </div>
       </div>
 
