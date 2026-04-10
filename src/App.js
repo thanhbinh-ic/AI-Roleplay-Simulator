@@ -3109,7 +3109,7 @@ const App = () => {
         },
       ],
     };
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${inputApiKey}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.REACT_APP_GEMINI_API_KEY || apiKey}`;
 
     try {
       const response = await fetch(apiUrl, {
@@ -3181,7 +3181,7 @@ const App = () => {
     const payload = {
       contents: [{ role: "user", parts: [{ text: promptText }] }],
     };
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${effectiveApiKey}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.REACT_APP_GEMINI_API_KEY || apiKey}`;
 
     try {
       const response = await fetch(apiUrl, {
@@ -3977,7 +3977,7 @@ const App = () => {
       contents: currentChatHistory,
       generationConfig: {},
     };
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${effectiveApiKey}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.REACT_APP_GEMINI_API_KEY || apiKey}`;
 
     try {
       const response = await fetch(apiUrl, {
