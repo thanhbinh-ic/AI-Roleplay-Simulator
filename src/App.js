@@ -2954,9 +2954,13 @@ const App = () => {
   const handleLogin = async () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      setShowAuthModal(false);
       console.log("Chào mừng Đại Ca trở lại:", userCredential.user.email);
     } catch (error) {
-      alert("Sai email hoặc mật khẩu rồi Đại Ca ơi!");
+      let errorMessage = "Sai email hoặc mật khẩu rồi Đại Ca ơi!";
+      if (error.code === 'auth/user-not-found') errorMessage = "Tài khoản này chưa tồn tại Đại Ca ạ!";
+      if (error.code === 'auth/wrong-password') errorMessage = "Mật khẩu sai rồi, Đại Ca nhớ lại xem!";
+      alert(errorMessage);
     }
   };
 
