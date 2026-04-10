@@ -5826,9 +5826,16 @@ const App = () => {
       >
         {/* Lời nhắc của AI */}
         {aiHint && !user && (
-          <div className="absolute bottom-full right-0 mb-2 z-[1000] flex flex-col items-end pointer-events-none">
-            
-            {/* 1. Bong bóng thoại chính */}
+          <div className="absolute z-[999] pointer-events-none"
+               style={{
+                 // Cố định vị trí phía trên bên phải của con linh vật
+                 bottom: (isMascotActive || isMascotEvolved) ? '120px' : '155px', // Kích thước khung Dạng 2 thấp hơn Dạng 1 nên bottom phải thấp hơn
+                 right: (isMascotActive || isMascotEvolved) ? '25px' : '30px',   // Dạng 2 rộng hơn Dạng 1 nên right phải nhỏ hơn để bám sát lề phải
+                 // Chuyển cảnh mượt mà khi đổi dạng
+                 transition: 'all 0.5s ease-in-out'
+               }}
+          >
+            {/* 1. Bong bóng chat chính (Đã gỡ animate-bounce) */}
             <div className="
               bg-white/10 backdrop-blur-lg 
               border border-white/20 
@@ -5838,23 +5845,17 @@ const App = () => {
               shadow-[0_4px_30px_rgba(0,0,0,0.2)]
               max-w-[40vw] min-w-[120px] lg:max-w-[280px]
               w-max break-words text-center leading-tight 
-              relative overflow-hidden animate-bounce
+              relative overflow-hidden
             ">
+              {/* Lớp phản chiếu ánh sáng nhẹ tạo độ lỏng */}
               <div className="absolute inset-0 bg-gradient-to-br from-white/15 to-transparent"></div>
+              
               <span className="relative z-10">{aiHint}</span>
             </div>
 
-            {/* 2. Cụm nút tròn suy nghĩ (Thought Dots) - Căn theo lề phải của bong bóng */}
-            <div className="mr-8 mt-1 flex flex-col items-center gap-1.5">
-              {/* Nút lớn nhất */}
-              <div className="w-5 h-5 rounded-full border border-white/30 backdrop-blur-md bg-white/10 shadow-lg"></div>
-              
-              {/* Nút trung bình */}
-              <div className="w-3.5 h-3.5 rounded-full border border-white/30 backdrop-blur-sm bg-white/10 shadow-md"></div>
-              
-              {/* Nút nhỏ nhất (Gần đầu linh vật) */}
-              <div className="w-2 h-2 rounded-full border border-white/20 bg-white/5 shadow-sm"></div>
-            </div>
+            {/* 2. Chỉ 1 dấu chấm suy nghĩ duy nhất (`Thought Dot`), nằm CỰC GẦN đầu linh vật */}
+            <div className="w-2.5 h-2.5 rounded-full border border-white/30 bg-white/10 shadow-sm 
+                            absolute -bottom-2 right-8 pointer-events-none"></div>
           </div>
         )}
 
