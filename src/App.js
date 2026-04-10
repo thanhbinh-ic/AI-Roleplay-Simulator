@@ -2995,7 +2995,7 @@ const App = () => {
     }
 
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, email, password);
       
       // Đăng nhập thành công
       alert("Chào mừng Đại Ca trở lại thế giới!");
