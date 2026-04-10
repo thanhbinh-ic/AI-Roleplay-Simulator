@@ -763,7 +763,6 @@ const AuthModal = ({ show, onClose, onLogin, onRegister, email, setEmail, passwo
               className="w-full bg-gray-700/70 border border-gray-600 rounded-lg p-3 text-white focus:border-green-500 focus:outline-none transition-all"
               placeholder="••••••••"
             />
-            {errorMsg && <p className="text-red-500 text-xs font-bold mb-4 animate-pulse">⚠️ {errorMsg}</p>}
           </div>
         </div>
 
@@ -2993,6 +2992,7 @@ const App = () => {
     // 1. Kiểm tra nhanh đầu vào (Client-side validation)
     if (!email || !password) {
       // alert("Đại Ca quên chưa nhập Email hoặc Mật khẩu kìa!");
+      let thongBao = "Đại Ca quên chưa nhập Email hoặc Mật khẩu kìa!";
       setErrorMsg(thongBao);
       return;
     }
@@ -5807,6 +5807,7 @@ const App = () => {
         setPassword={setPassword}
         isLoginView={isLoginView}
         setIsLoginView={setIsLoginView}
+        {errorMsg && <p className="text-red-500 text-xs font-bold mb-4 animate-pulse">⚠️ {errorMsg}</p>}
       />
     </div>
   );
