@@ -2859,7 +2859,6 @@ const App = () => {
   
   useEffect(() => {
     if (!user) {
-      const hints = ["Đăng nhập để không mất dữ liệu nhé chủ nhân!", "Lưu lại hành trình của bạn ngay nào...", "AI đang đợi chủ nhân đăng nhập đó!"];
       const hints = [
         "Chủ nhân ơi, Cici đợi bạn hơi lâu rồi đó nha!"
         "Đăng nhập để không mất dữ liệu nhé chủ nhân!",
