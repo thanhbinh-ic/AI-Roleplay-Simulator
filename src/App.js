@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { initializeApp } from "firebase/app";
 import { auth, db, googleProvider } from "./firebase";
-import { getAuth, signInWithPopup, onAuthStateChanged, signOut } from "firebase/auth";
+import { signInWithPopup, onAuthStateChanged, signOut } from "firebase/auth";
 import './index.css';
 import {
-  getFirestore,
   doc,
   setDoc,
   getDoc,
@@ -2853,7 +2851,7 @@ const App = () => {
   // 2. Hàm xử lý bấm nút Đăng nhập
   const handleLogin = async () => {
     try {
-      const result = await signInWithPopup(auth, googleProvider);
+      await signInWithPopup(auth, googleProvider);
     } catch (error) {
       console.error("Lỗi đăng nhập:", error.message);
     }
