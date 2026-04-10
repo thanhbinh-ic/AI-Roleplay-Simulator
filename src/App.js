@@ -21,15 +21,6 @@ import {
   query,
 } from "firebase/firestore";
 
-
-export const auth = getAuth(app); //binh
-export { 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  signOut, 
-  onAuthStateChanged 
-};
-
 // Icons
 const PlayIcon = () => (
   <svg
