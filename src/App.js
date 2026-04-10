@@ -763,6 +763,7 @@ const AuthModal = ({ show, onClose, onLogin, onRegister, email, setEmail, passwo
               className="w-full bg-gray-700/70 border border-gray-600 rounded-lg p-3 text-white focus:border-green-500 focus:outline-none transition-all"
               placeholder="••••••••"
             />
+            {errorMsg && <p className="text-red-500 text-xs font-bold mb-4 animate-pulse">⚠️ {errorMsg}</p>}
           </div>
         </div>
 
@@ -2721,6 +2722,7 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isLoginView, setIsLoginView] = useState(true);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const [apiMode, setApiMode] = useState("defaultGemini");
   const [apiKeyStatus, setApiKeyStatus] = useState({
@@ -2990,7 +2992,8 @@ const App = () => {
   const handleLogin = async () => {
     // 1. Kiểm tra nhanh đầu vào (Client-side validation)
     if (!email || !password) {
-      alert("Đại Ca quên chưa nhập Email hoặc Mật khẩu kìa!");
+      // alert("Đại Ca quên chưa nhập Email hoặc Mật khẩu kìa!");
+      setErrorMsg(thongBao);
       return;
     }
 
@@ -3001,8 +3004,8 @@ const App = () => {
       alert("Chào mừng Đại Ca trở lại thế giới!");
 
       setShowAuthModal(false);
-      setEmail("");
-      setPassword("");
+      // setEmail("");
+      // setPassword("");
 
     } catch (error) {
       // 2. Phân tích mã lỗi từ Firebase
@@ -3022,7 +3025,7 @@ const App = () => {
           alert("Thông tin đăng nhập không chính xác. Đại Ca kiểm tra lại nhé!");
           break;
         default:
-          alert("Lỗi kết nối: " + error.message);
+          alert("Lỗi đăng nhập: " + error.message);
       }
     }
   };
