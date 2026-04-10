@@ -2851,14 +2851,6 @@ const App = () => {
   // 2. Hàm xử lý bấm nút Đăng nhập
   const handleLogin = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
-    } catch (error) {
-      console.error("Lỗi đăng nhập:", error.message);
-    }
-  };
-
-  const handleLogin = async () => {
-    try {
       await signInWithRedirect(auth, googleProvider);
     } catch (error) {
       console.error("Lỗi đăng nhập:", error.message);
