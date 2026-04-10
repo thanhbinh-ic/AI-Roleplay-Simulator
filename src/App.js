@@ -3096,7 +3096,6 @@ const App = () => {
 
     // Sau 1.5 giây thì "đáp đất" và chuyển sang trạng thái đã tiến hóa
     setTimeout(() => {
-      setMascotPos(prev => ({ ...prev, bottom: 24 }));
       setIsMascotActive(false); // Hết diễn hoạt nhảy
       setIsMascotEvolved(true); // Đánh dấu đã tiến hóa (giữ ảnh 2)
     }, 1500);
@@ -5827,9 +5826,8 @@ const App = () => {
                 height: (isMascotActive || isMascotEvolved) ? '115px' : '150px',
               }}
               className={`object-contain transition-all duration-500 ease-in-out ${
-                isMascotActive ? 'brightness-110 scale-110' : 
-                isMascotEvolved ? 'brightness-105' : 
-                'hover:scale-105'
+                isMascotActive ? 'brightness-110' : 
+                isMascotEvolved ? 'brightness-105'
               }`}
               onError={(e) => { e.target.src = "https://cdn-icons-png.flaticon.com/512/4712/4712035.png" }}
             />
