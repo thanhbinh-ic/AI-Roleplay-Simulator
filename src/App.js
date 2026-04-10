@@ -5819,7 +5819,9 @@ const App = () => {
         className="fixed z-[999] transition-all duration-500 ease-out"
         style={{ 
           right: `${mascotPos.right}px`, 
-          bottom: `${mascotPos.bottom}px` 
+          bottom: `${mascotPos.bottom}px`,
+          // Chặn toàn bộ tương tác chuột khi linh vật đang trong trạng thái Active (đang nhảy/biến hình)
+          pointerEvents: isMascotActive ? 'none' : 'auto' 
         }}
       >
         {/* Lời nhắc của AI */}
@@ -5837,10 +5839,11 @@ const App = () => {
 
         {/* LINH VẬT BIẾN HÌNH LINH HOẠT */}
         <div 
-          className="relative group cursor-pointer" 
+          className={`relative group ${isMascotActive ? 'cursor-default' : 'cursor-pointer'}`} 
           onClick={() => {
-            if (!user) handleMascotClick(); // Gọi hàm nhảy và đổi dạng
-            else handleSignOut(); // Gọi hàm đăng xuất đã sửa ở trên
+            if (isMascotActive) return; // Bảo vệ thêm 1 lớp bằng logic
+            if (!user) handleMascotClick(); 
+            else handleSignOut(); 
           }}
         >
           {/* Hào quang vàng rực rỡ khi hover */}
@@ -5852,19 +5855,19 @@ const App = () => {
             src={`${GITHUB_RES_URL}/${mascotId}_${(isMascotActive || isMascotEvolved || user) ? '2' : '1'}.gif`}
             alt="AI Mascot"
             style={{
-              // Tỷ lệ chuẩn Đại Ca yêu cầu: Dạng 1 (100x150), Dạng 2 (185x115)
               width: (isMascotActive || isMascotEvolved || user) ? '185px' : '100px',
               height: (isMascotActive || isMascotEvolved || user) ? '115px' : '150px',
             }}
             className={`object-contain transition-all duration-500 ease-in-out
               ${(isMascotActive || user) ? 'brightness-110' : ''}
-              hover:drop-shadow-[0_0_20px_rgba(255,215,0,0.9)] 
-              hover:brightness-110
+              /* Chỉ hiện hào quang và drop-shadow khi KHÔNG trong trạng thái active */
+              ${!isMascotActive ? 'hover:drop-shadow-[0_0_20px_rgba(255,215,0,0.9)] hover:brightness-110' : ''}
             `}
             onError={(e) => { e.target.src = "https://cdn-icons-png.flaticon.com/512/4712/4712035.png" }}
           />
-          {/* Hiển thị thêm icon nhỏ để người dùng biết là bấm vào để thoát khi đã login */}
-          {user && (
+
+          {/* Nút Đăng xuất nhỏ (Chỉ hiện khi đã login và không đang chuyển cảnh) */}
+          {user && !isMascotActive && (
             <div className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] px-2 py-1 rounded-full border border-red-400 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
               ĐĂNG XUẤT
             </div>
