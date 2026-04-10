@@ -3,7 +3,7 @@ import { auth, db} from "./firebase";
 import { 
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword, 
-  signOut, 
+  //binh signOut, 
   onAuthStateChanged 
 } from "firebase/auth";
 
@@ -5651,15 +5651,20 @@ const App = () => {
           </div>
         </div>
       )}
-      {!user && (
-        <button
-          onClick={() => setShowAuthModal(true)}
-          className="fixed right-0 top-1/2 -translate-y-1/2 bg-green-600 hover:bg-green-700 text-white p-3 rounded-l-2xl shadow-[-5px_0_15px_rgba(0,0,0,0.5)] border-l border-y border-green-400 flex flex-col items-center gap-2 transition-all group z-[100]"
+      {user && (
+        <button 
+          onClick={() => signOut(auth)}
+          className="text-red-500 underline"
         >
-          <span className="[writing-mode:vertical-lr] font-bold tracking-widest text-sm py-2">
-            TÀI KHOẢN
-          </span>
-          <span className="text-xl group-hover:scale-125 transition-transform">🔑</span>
+          Đăng xuất
+        </button>
+      )}
+      {!user && (
+        <button 
+          onClick={() => setShowAuthModal(true)}
+          className="fixed right-0 top-1/2 -translate-y-1/2 bg-green-600 p-3 rounded-l-xl z-[100]"
+        >
+          🔑 TÀI KHOẢN
         </button>
       )}
       <SuggestionsModal
@@ -5720,6 +5725,18 @@ const App = () => {
         show={showUpdateModal} 
         data={updateInfo} 
         onClose={() => setShowUpdateModal(false)} 
+      />
+      <AuthModal 
+        show={showAuthModal} 
+        onClose={() => setShowAuthModal(false)}
+        onLogin={handleLogin}
+        onRegister={handleRegister}
+        email={email}
+        setEmail={setEmail}
+        password={password}
+        setPassword={setPassword}
+        isLoginView={isLoginView}
+        setIsLoginView={setIsLoginView}
       />
     </div>
   );
