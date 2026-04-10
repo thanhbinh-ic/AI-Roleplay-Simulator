@@ -5797,7 +5797,7 @@ const App = () => {
       <div 
         className="fixed z-[100] transition-all duration-500 ease-out"
         style={{ 
-          left: `${mascotPos.left}px`, 
+          left: `${mascotPos.right}px`, 
           bottom: `${mascotPos.bottom}px` 
         }}
       >
@@ -5821,14 +5821,15 @@ const App = () => {
               src={`${GITHUB_RES_URL}/${mascotId}_${(isMascotActive || isMascotEvolved) ? '2' : '1'}.gif`}
               alt="AI Mascot"
               style={{
-                // Dùng style trực tiếp để kiểm soát chính xác từng pixel theo ý Đại Ca
                 width: (isMascotActive || isMascotEvolved) ? '185px' : '100px',
                 height: (isMascotActive || isMascotEvolved) ? '115px' : '150px',
               }}
-              className={`object-contain transition-all duration-500 ease-in-out ${
-                isMascotActive ? 'brightness-110' : 
-                isMascotEvolved ? 'brightness-105'
-              }`}
+              className={`object-contain transition-all duration-500 ease-in-out cursor-pointer
+                ${isMascotActive ? 'brightness-110' : isMascotEvolved ? 'brightness-105' : ''}
+                /* Hiệu ứng hào quang vàng khi hover */
+                hover:drop-shadow-[0_0_15px_rgba(255,215,0,0.8)] 
+                hover:brightness-110
+              `}
               onError={(e) => { e.target.src = "https://cdn-icons-png.flaticon.com/512/4712/4712035.png" }}
             />
           </div>
