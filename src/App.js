@@ -2721,7 +2721,6 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isLoginView, setIsLoginView] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
 
   const [apiMode, setApiMode] = useState("defaultGemini");
   const [apiKeyStatus, setApiKeyStatus] = useState({
@@ -2991,9 +2990,7 @@ const App = () => {
   const handleLogin = async () => {
     // 1. Kiểm tra nhanh đầu vào (Client-side validation)
     if (!email || !password) {
-      // alert("Đại Ca quên chưa nhập Email hoặc Mật khẩu kìa!");
-      let thongBao = "Đại Ca quên chưa nhập Email hoặc Mật khẩu kìa!";
-      setErrorMsg(thongBao);
+      alert("Đại Ca quên chưa nhập Email hoặc Mật khẩu kìa!");
       return;
     }
 
@@ -5723,10 +5720,17 @@ const App = () => {
       )}
       {user && (
         <button 
-          onClick={() => signOut(auth)}
-          className="fixed right-0 top-1/2 -translate-y-1/2 bg-green-600 p-3 rounded-l-xl z-[100]"
+          onClick={() => {
+            if(window.confirm("Đại Ca muốn rời mạng thật à?")) {
+              signOut(auth);
+            }
+          }}
+          className="fixed right-0 top-1/2 -translate-y-1/2 bg-red-600 hover:bg-red-700 text-white p-3 rounded-l-2xl shadow-[-5px_0_15px_rgba(220,38,38,0.4)] border-l border-y border-red-400 flex flex-col items-center gap-2 transition-all group z-[100] active:scale-95"
         >
-          Đăng xuất
+          <span className="[writing-mode:vertical-lr] font-bold tracking-widest text-sm py-2">
+            ĐĂNG XUẤT
+          </span>
+          <span className="text-xl group-hover:rotate-12 transition-transform">🚪</span>
         </button>
       )}
       {!user && (
@@ -5737,7 +5741,6 @@ const App = () => {
           🔑 TÀI KHOẢN
         </button>
       )}
-      {errorMsg && <p className="text-red-500 text-xs font-bold mb-4 animate-pulse">⚠️ {errorMsg}</p>}
       <SuggestionsModal
         show={showSuggestionsModal.show}
         title={showSuggestionsModal.title || "✨ Gợi Ý"}
