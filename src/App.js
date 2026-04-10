@@ -2988,16 +2988,6 @@ const App = () => {
 
   // Hàm Đăng Nhập (Cho Đại Ca vào game)
   const handleLogin = async () => {
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      alert("Chào mừng Đại Ca trở lại!");
-      setShowAuthModal(false);
-    } catch (error) {
-      alert("Sai email hoặc mật khẩu rồi Đại Ca ơi!");
-    }
-  };
-
-  const handleLogin = async () => {
     // 1. Kiểm tra nhanh đầu vào (Client-side validation)
     if (!email || !password) {
       alert("Đại Ca quên chưa nhập Email hoặc Mật khẩu kìa!");
