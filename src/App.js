@@ -786,7 +786,7 @@ const AuthModal = ({ show, onClose, onLogin, onRegister, email, setEmail, passwo
             onClick={onClose}
             className="w-full text-gray-500 text-xs hover:text-gray-300 pt-2"
           >
-            ĐÓNG QUAY LẠI
+            QUAY LẠI
           </button>
         </div>
       </div>
@@ -5827,12 +5827,36 @@ const App = () => {
         {/* Lời nhắc của AI */}
         {aiHint && !user && (
           <div className="absolute bottom-full right-0 mb-4 z-[1000]">
-            <div className="bg-white text-gray-900 text-[10px] sm:text-xs font-bold px-4 py-2 rounded-2xl shadow-xl border-2 border-green-500 
-                            max-w-[40vw] min-w-[120px] lg:max-w-[250px]
-                            w-max break-words text-center leading-tight animate-bounce relative">
-              {aiHint}
-              <div className="absolute -bottom-2 right-6 w-0 h-0 border-t-[10px] border-t-white border-x-[8px] border-x-transparent"></div>
-              <div className="absolute -bottom-[11px] right-[23px] w-0 h-0 border-t-[11px] border-t-green-500 border-x-[9px] border-x-transparent -z-10"></div>
+            {/* Container chính với hiệu ứng Glassmorphism */}
+            <div className="relative group animate-bounce">
+              <div className="
+                /* Hiệu ứng kính lỏng: Nền trắng cực mờ + Đổ bóng nhòe */
+                bg-white/20 backdrop-blur-md 
+                /* Viền mảnh như sợi tóc đặc trưng của iOS */
+                border border-white/40 
+                /* Chữ trắng có bóng đổ để dễ đọc trên nền mờ */
+                text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]
+                text-[10px] sm:text-xs font-semibold 
+                px-4 py-2 rounded-2xl 
+                shadow-[0_8px_32px_0_rgba(31,38,135,0.37)]
+                max-w-[40vw] min-w-[120px] lg:max-w-[250px]
+                w-max break-words text-center leading-tight 
+                relative overflow-hidden
+              ">
+                {/* Lớp phản chiếu (Glint) tạo hiệu ứng lỏng */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-transparent pointer-events-none"></div>
+                
+                <span className="relative z-10">{aiHint}</span>
+
+                {/* Đuôi bong bóng dạng kính */}
+                <div className="absolute -bottom-2 right-6 w-0 h-0 
+                                border-t-[10px] border-t-white/30 
+                                backdrop-blur-md
+                                border-x-[8px] border-x-transparent"></div>
+              </div>
+              
+              {/* Hiệu ứng hào quang neon xanh nhẹ bám theo viền (Liquid Glow) */}
+              <div className="absolute inset-0 -z-10 bg-green-500/20 blur-xl rounded-2xl"></div>
             </div>
           </div>
         )}
