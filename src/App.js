@@ -2854,6 +2854,23 @@ const App = () => {
     [knowledgeBase],
   );
 
+  //AI Hint
+  const [aiHint, setAiHint] = useState("");
+  
+  useEffect(() => {
+    if (!user) {
+      const hints = ["Đăng nhập để không mất dữ liệu nhé chủ nhân!", "Lưu lại hành trình của bạn ngay nào...", "AI đang đợi chủ nhân đăng nhập đó!"];
+      const interval = setInterval(() => {
+        // Tỉ lệ 30% hiện thông báo mỗi 5 giây
+        if (Math.random() > 0.7) {
+          setAiHint(hints[Math.floor(Math.random() * hints.length)]);
+          setTimeout(() => setAiHint(""), 3000); // Hiện 3 giây rồi biến mất
+        }
+      }, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [user]);
+
   //Scrool Down
   const storyEndRef = useRef(null);
 
@@ -5718,32 +5735,50 @@ const App = () => {
           </div>
         </div>
       )}
-      {user && (
-        <button 
-          onClick={() => {
-            if(window.confirm("Đại Ca muốn rời mạng thật à?")) {
-              signOut(auth);
-            }
-          }}
-          className="fixed right-0 top-1/2 -translate-y-1/2 bg-red-600 hover:bg-red-700 text-white p-3 rounded-l-2xl shadow-[-5px_0_15px_rgba(220,38,38,0.4)] border-l border-y border-red-400 flex flex-col items-center gap-2 transition-all group z-[100] active:scale-95"
-        >
-          <span className="[writing-mode:vertical-lr] font-bold tracking-widest text-sm py-2">
-            ĐĂNG XUẤT
-          </span>
-          <span className="text-xl group-hover:rotate-12 transition-transform">🚪</span>
-        </button>
-      )}
-      {!user && (
-        <button 
-          onClick={() => {
-              setIsLoginView(true);
-              setShowAuthModal(true);
-            }}
-          className="fixed right-0 top-1/2 -translate-y-1/2 bg-green-600 p-3 rounded-l-xl z-[100]"
-        >
-          🔑 TÀI KHOẢN
-        </button>
-      )}
+      <div className="fixed left-6 bottom-6 flex flex-col items-center gap-4 z-[100]">
+  
+        {/* Lời nhắc của AI (Tooltip suy nghĩ) */}
+        {aiHint && !user && (
+          <div className="absolute bottom-16 left-0 bg-white text-gray-900 text-xs font-bold px-3 py-2 rounded-2xl rounded-bl-none shadow-lg animate-bounce whitespace-nowrap border-2 border-green-500">
+              {aiHint}
+              <div className="absolute -bottom-2 left-2 w-0 h-0 border-t-8 border-t-white border-r-8 border-r-transparent"></div>
+            </div>
+          )}
+
+          {/* NÚT TÀI KHOẢN (KHI CHƯA ĐĂNG NHẬP) */}
+          {!user && (
+            <div className="relative">
+              {/* Hiệu ứng tỏa sáng rung động (Ping animation) */}
+              <span className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-75"></span>
+              
+              <button
+                onClick={() => {
+                  setIsLoginView(true);
+                  setShowAuthModal(true);
+                  setErrorMsg("");
+                }}
+                className="relative w-14 h-14 bg-green-600 hover:bg-green-500 text-white rounded-full shadow-[0_0_20px_rgba(34,197,94,0.6)] border-2 border-green-400 flex items-center justify-center text-2xl transition-all hover:scale-110 active:scale-90 animate-infinite"
+                style={{ animation: 'reverb 2s infinite' }}
+              >
+                🔑
+              </button>
+            </div>
+          )}
+
+          {/* NÚT ĐĂNG XUẤT (KHI ĐÃ ĐĂNG NHẬP) */}
+          {user && (
+            <button
+              onClick={() => {
+                if(window.confirm("Đại Ca muốn rời mạng thật à?")) signOut(auth);
+              }}
+              className="w-12 h-12 bg-red-600 hover:bg-red-500 text-white rounded-full shadow-[0_0_15px_rgba(220,38,38,0.5)] border-2 border-red-400 flex items-center justify-center text-xl transition-all hover:rotate-12 active:scale-90"
+              title="Đăng xuất"
+            >
+              🚪
+            </button>
+          )}
+        </div>
+  
       <SuggestionsModal
         show={showSuggestionsModal.show}
         title={showSuggestionsModal.title || "✨ Gợi Ý"}
