@@ -3167,7 +3167,13 @@ const App = () => {
   };
 
   const fetchGenericGeminiText = async (promptText) => {
-    const effectiveApiKey = process.env.REACT_APP_GEMINI_API_KEY || apiKey;
+    let effectiveApiKey = "";
+    
+    if (apiMode === "userKey") {
+        effectiveApiKey = apiKey;
+    } else {
+        effectiveApiKey = process.env.REACT_APP_GEMINI_API_KEY;
+    }
     if (!effectiveApiKey) {
       setModalMessage({
         show: true,
