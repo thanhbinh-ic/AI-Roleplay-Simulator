@@ -724,6 +724,76 @@ const UpdateLogModal = ({ show, onClose, changelog }) => {
   );
 };
 
+//Popup đăng nhập
+const AuthModal = ({ show, onClose, onLogin, onRegister, email, setEmail, password, setPassword, isLoginView, setIsLoginView }) => { //binh
+  if (!show) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-[120] backdrop-blur-sm">
+      <div className="bg-gray-800 p-6 rounded-xl shadow-2xl w-full max-w-md border border-green-600 animate-in fade-in zoom-in duration-200">
+        
+        {/* Header */}
+        <div className="flex items-center mb-6">
+          <div className="bg-green-600/20 p-2 rounded-lg mr-3">
+             <span className="text-2xl">👤</span>
+          </div>
+          <h2 className="text-2xl font-semibold text-green-400">
+            {isLoginView ? "Đăng Nhập Hệ Thống" : "Tạo Tài Khoản Mới"}
+          </h2>
+        </div>
+
+        {/* Form Inputs */}
+        <div className="space-y-4">
+          <div>
+            <label className="text-xs text-gray-400 uppercase tracking-wider ml-1">Email</label>
+            <input 
+              type="email" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full bg-gray-700/70 border border-gray-600 rounded-lg p-3 text-white focus:border-green-500 focus:outline-none transition-all"
+              placeholder="daica@gmail.com"
+            />
+          </div>
+          <div>
+            <label className="text-xs text-gray-400 uppercase tracking-wider ml-1">Mật khẩu</label>
+            <input 
+              type="password" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full bg-gray-700/70 border border-gray-600 rounded-lg p-3 text-white focus:border-green-500 focus:outline-none transition-all"
+              placeholder="••••••••"
+            />
+          </div>
+        </div>
+
+        {/* Buttons */}
+        <div className="mt-8 space-y-3">
+          <button
+            onClick={isLoginView ? onLogin : onRegister}
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-lg transform active:scale-95 transition-all"
+          >
+            {isLoginView ? "XÁC NHẬN VÀO GAME" : "ĐĂNG KÝ TÀI KHOẢN"}
+          </button>
+          
+          <button
+            onClick={() => setIsLoginView(!isLoginView)}
+            className="w-full text-teal-300 text-sm hover:text-teal-100 transition-colors"
+          >
+            {isLoginView ? "Chưa có tài khoản? Đăng ký ngay" : "Đã có tài khoản? Đăng nhập"}
+          </button>
+
+          <button
+            onClick={onClose}
+            className="w-full text-gray-500 text-xs hover:text-gray-300 pt-2"
+          >
+            ĐÓNG QUAY LẠI
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ApiSetupModal = ({
   inputApiKey,
   setInputApiKey,
@@ -2649,6 +2719,8 @@ const App = () => {
   const [apiKey, setApiKey] = useState(process.env.REACT_APP_GEMINI_API_KEY || ""); //binh
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [isLoginView, setIsLoginView] = useState(true);
 
   const [apiMode, setApiMode] = useState("defaultGemini");
   const [apiKeyStatus, setApiKeyStatus] = useState({
@@ -5579,30 +5651,16 @@ const App = () => {
           </div>
         </div>
       )}
-      {!user ? (
-        <div className="flex flex-col gap-2 p-4 bg-gray-800 rounded-lg">
-          <input 
-            type="email" 
-            placeholder="Email của Đại Ca" 
-            className="p-2 rounded bg-gray-700 text-white"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input 
-            type="password" 
-            placeholder="Mật khẩu" 
-            className="p-2 rounded bg-gray-700 text-white"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <div className="flex gap-2">
-            <button onClick={handleLogin} className="bg-blue-600 px-4 py-2 rounded">Đăng Nhập</button>
-            <button onClick={handleRegister} className="bg-gray-600 px-4 py-2 rounded text-sm">Đăng Ký</button>
-          </div>
-        </div>
-      ) : (
-        <div>
-          <p>Đang dùng tài khoản: {user.email}</p>
-          <button onClick={() => signOut(auth)} className="text-red-400 underline">Đăng xuất</button>
-        </div>
+      {!user && (
+        <button
+          onClick={() => setShowAuthModal(true)}
+          className="fixed right-0 top-1/2 -translate-y-1/2 bg-green-600 hover:bg-green-700 text-white p-3 rounded-l-2xl shadow-[-5px_0_15px_rgba(0,0,0,0.5)] border-l border-y border-green-400 flex flex-col items-center gap-2 transition-all group z-[100]"
+        >
+          <span className="[writing-mode:vertical-lr] font-bold tracking-widest text-sm py-2">
+            TÀI KHOẢN
+          </span>
+          <span className="text-xl group-hover:scale-125 transition-transform">🔑</span>
+        </button>
       )}
       <SuggestionsModal
         show={showSuggestionsModal.show}
