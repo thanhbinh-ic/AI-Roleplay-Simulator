@@ -5827,36 +5827,45 @@ const App = () => {
         {/* Lời nhắc của AI */}
         {aiHint && !user && (
           <div className="absolute bottom-full right-0 mb-4 z-[1000]">
-            {/* Container chính với hiệu ứng Glassmorphism */}
-            <div className="relative group animate-bounce">
+            {/* Container chính: Đổi animate-bounce thành pulse nhẹ nhàng hơn */}
+            <div className="relative group animate-pulse-slow">
+              
+              {/* 1. Bong bóng thoại chính (Vẫn giữ hiệu ứng Glassmorphism iOS 26) */}
               <div className="
-                /* Hiệu ứng kính lỏng: Nền trắng cực mờ + Đổ bóng nhòe */
-                bg-white/20 backdrop-blur-md 
-                /* Viền mảnh như sợi tóc đặc trưng của iOS */
-                border border-white/40 
-                /* Chữ trắng có bóng đổ để dễ đọc trên nền mờ */
-                text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]
+                bg-white/10 backdrop-blur-lg 
+                border border-white/20 
+                text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]
                 text-[10px] sm:text-xs font-semibold 
-                px-4 py-2 rounded-2xl 
-                shadow-[0_8px_32px_0_rgba(31,38,135,0.37)]
-                max-w-[40vw] min-w-[120px] lg:max-w-[250px]
+                px-5 py-3 rounded-[2rem] /* Bo tròn sâu hơn để giống hình cầu */
+                shadow-[0_4px_30px_rgba(0,0,0,0.2)]
+                max-w-[40vw] min-w-[120px] lg:max-w-[280px]
                 w-max break-words text-center leading-tight 
                 relative overflow-hidden
               ">
-                {/* Lớp phản chiếu (Glint) tạo hiệu ứng lỏng */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-transparent pointer-events-none"></div>
+                {/* Lớp phản chiếu ánh sáng nhẹ tạo độ lỏng */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/15 to-transparent pointer-events-none"></div>
                 
-                <span className="relative z-10">{aiHint}</span>
-
-                {/* Đuôi bong bóng dạng kính */}
-                <div className="absolute -bottom-2 right-6 w-0 h-0 
-                                border-t-[10px] border-t-white/30 
-                                backdrop-blur-md
-                                border-x-[8px] border-x-transparent"></div>
+                {/* Nội dung text (vẫn giữ hiệu ứng phát sáng nhẹ khi group được hover) */}
+                <span className="relative z-10 group-hover:text-yellow-100 transition-colors">
+                  {aiHint}
+                </span>
               </div>
               
-              {/* Hiệu ứng hào quang neon xanh nhẹ bám theo viền (Liquid Glow) */}
-              <div className="absolute inset-0 -z-10 bg-green-500/20 blur-xl rounded-2xl"></div>
+              {/* 2. Đuôi móc kết nối (Thought Dots) - ĐÃ SỬA: Dạng Pixel rỗng viền */}
+              <div className="absolute -bottom-6 right-8 flex flex-col items-center gap-2 pointer-events-none">
+                
+                {/* Bong bóng tròn lớn (Rỗng viền trắng mờ) */}
+                <div className="w-6 h-6 rounded-full border border-white/30 backdrop-blur-md bg-white/10 shadow-lg"></div>
+                
+                {/* Bong bóng tròn trung bình (Rỗng viền trắng mờ) */}
+                <div className="w-4 h-4 rounded-full border border-white/30 backdrop-blur-sm bg-white/10 -mt-1 shadow-md"></div>
+                
+                {/* Bong bóng tròn nhỏ nhất (Gần đầu linh vật, viền trắng mờ) */}
+                <div className="w-2.5 h-2.5 rounded-full border border-white/30 bg-white/10 -mt-0.5 shadow-sm"></div>
+              </div>
+              
+              {/* Hiệu ứng hào quang Liquid Glow phía sau */}
+              <div className="absolute inset-0 -z-10 bg-green-500/10 blur-2xl rounded-2xl transition-opacity group-hover:bg-yellow-400/20 group-hover:opacity-100"></div>
             </div>
           </div>
         )}
@@ -5865,7 +5874,6 @@ const App = () => {
         <div 
           className={`relative group transition-all duration-500
             ${isMascotActive ? 'cursor-default pointer-events-none' : 'cursor-pointer'}
-            /* Hiệu ứng hào quang vàng phủ toàn bộ group khi hover */
             ${!isMascotActive ? 'hover:drop-shadow-[0_0_25px_rgba(255,215,0,0.8)]' : ''}
           `} 
           onClick={() => {
@@ -5890,7 +5898,6 @@ const App = () => {
             }}
             className={`object-contain transition-all duration-500 ease-in-out
               ${(isMascotActive || user) ? 'brightness-110' : ''}
-              /* Thêm hiệu ứng sáng nhẹ cho ảnh khi group được hover */
               group-hover:brightness-110
             `}
             onError={(e) => { e.target.src = "https://cdn-icons-png.flaticon.com/512/4712/4712035.png" }}
