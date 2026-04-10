@@ -5735,7 +5735,10 @@ const App = () => {
       )}
       {!user && (
         <button 
-          onClick={() => setShowAuthModal(true)}
+          onClick={() => {
+              setIsLoginView(true);
+              setShowAuthModal(true);
+            }}
           className="fixed right-0 top-1/2 -translate-y-1/2 bg-green-600 p-3 rounded-l-xl z-[100]"
         >
           🔑 TÀI KHOẢN
