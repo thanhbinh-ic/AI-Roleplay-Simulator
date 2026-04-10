@@ -5755,7 +5755,6 @@ const App = () => {
                 onClick={() => {
                   setIsLoginView(true);
                   setShowAuthModal(true);
-                  setErrorMsg("");
                 }}
                 className="relative w-14 h-14 bg-green-600 hover:bg-green-500 text-white rounded-full shadow-[0_0_20px_rgba(34,197,94,0.6)] border-2 border-green-400 flex items-center justify-center text-2xl transition-all hover:scale-110 active:scale-90 animate-infinite"
                 style={{ animation: 'reverb 2s infinite' }}
@@ -5778,7 +5777,7 @@ const App = () => {
             </button>
           )}
         </div>
-  
+
       <SuggestionsModal
         show={showSuggestionsModal.show}
         title={showSuggestionsModal.title || "✨ Gợi Ý"}
