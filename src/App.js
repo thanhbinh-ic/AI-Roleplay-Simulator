@@ -783,10 +783,7 @@ const AuthModal = ({ show, onClose, onLogin, onRegister, email, setEmail, passwo
           </button>
 
           <button
-            onClick={() => {
-              onClose(); 
-              if (typeof closeAuthModal === 'function') closeAuthModal();
-            }}
+            onClick={onClose}
             className="w-full text-gray-500 text-xs hover:text-gray-300 pt-2"
           >
             ĐÓNG QUAY LẠI
@@ -3105,7 +3102,7 @@ const App = () => {
   };
 
   // 1. Hàm đóng Popup Login
-  const closeAuthModal = () => {
+  const handleCloseModal = () => {
     setShowAuthModal(false);
     // Nếu chưa đăng nhập mà đóng popup, trả linh vật về Dạng 1
     if (!user) {
@@ -5936,7 +5933,7 @@ const App = () => {
       />
       <AuthModal 
         show={showAuthModal} 
-        onClose={() => setShowAuthModal(false)}
+        onClose={handleCloseModal}
         onLogin={handleLogin}
         onRegister={handleRegister}
         email={email}
