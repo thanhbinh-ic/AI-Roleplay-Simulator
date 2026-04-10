@@ -2,9 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
-  signInAnonymously,
   onAuthStateChanged,
-  signInWithCustomToken,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -13,13 +11,10 @@ import {
   getDoc,
   collection,
   addDoc,
-  getDocs,
-  updateDoc,
   deleteDoc,
   serverTimestamp,
   onSnapshot,
   query,
-  where,
 } from "firebase/firestore";
 
 // Icons
