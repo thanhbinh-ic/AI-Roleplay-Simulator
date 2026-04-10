@@ -783,7 +783,10 @@ const AuthModal = ({ show, onClose, onLogin, onRegister, email, setEmail, passwo
           </button>
 
           <button
-            onClick={onClose}
+            onClick={() => {
+              onClose(); 
+              if (typeof closeAuthModal === 'function') closeAuthModal();
+            }}
             className="w-full text-gray-500 text-xs hover:text-gray-300 pt-2"
           >
             ĐÓNG QUAY LẠI
@@ -3101,7 +3104,15 @@ const App = () => {
     }, 1500);
   };
 
-
+  // 1. Hàm đóng Popup Login
+  const closeAuthModal = () => {
+    setShowAuthModal(false);
+    // Nếu chưa đăng nhập mà đóng popup, trả linh vật về Dạng 1
+    if (!user) {
+      setIsMascotEvolved(false);
+      setIsMascotActive(false);
+    }
+  };
 
   // 2. Hàm Đăng xuất
   const handleSignOut = () => {
