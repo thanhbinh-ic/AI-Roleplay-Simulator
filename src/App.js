@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { auth, db, googleProvider } from "./firebase";
-import { signInWithRedirect, onAuthStateChanged, signOut } from "firebase/auth";
+import { signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from "firebase/auth";
 import './index.css';
 import {
   doc,
@@ -2867,6 +2867,19 @@ const App = () => {
       console.error("Lỗi đăng nhập:", error.message);
     }
   };
+
+  useEffect(() => {
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result) {
+          const user = result.user;
+          setUser(user);
+          setUserId(user.uid);
+        }
+      }).catch((error) => {
+        console.error("Lỗi kết quả redirect:", error.code);
+      });
+  }, []);
 
   // 3. Hàm Đăng xuất
   const handleLogout = () => {
