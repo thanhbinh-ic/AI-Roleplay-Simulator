@@ -3109,7 +3109,7 @@ const App = () => {
         },
       ],
     };
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${inputApiKey}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${inputApiKey}`;
 
     console.log("Giá trị Key đang dùng 1:", inputApiKey);
 
@@ -3188,7 +3188,7 @@ const App = () => {
     const payload = {
       contents: [{ role: "user", parts: [{ text: promptText }] }],
     };
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${effectiveApiKey}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${effectiveApiKey}`;
 
     console.log("Giá trị Key đang dùng 2:", effectiveApiKey);
 
@@ -3991,7 +3991,7 @@ const App = () => {
       contents: currentChatHistory,
       generationConfig: {},
     };
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${effectiveApiKey}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${effectiveApiKey}`;
 
     console.log("Giá trị Key đang dùng 3:", effectiveApiKey);
 
