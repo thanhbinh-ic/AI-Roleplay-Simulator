@@ -5863,16 +5863,22 @@ const App = () => {
 
         {/* LINH VẬT BIẾN HÌNH LINH HOẠT */}
         <div 
-          className={`relative group ${isMascotActive ? 'cursor-default' : 'cursor-pointer'}`} 
+          className={`relative group transition-all duration-500
+            ${isMascotActive ? 'cursor-default pointer-events-none' : 'cursor-pointer'}
+            /* Hiệu ứng hào quang vàng phủ toàn bộ group khi hover */
+            ${!isMascotActive ? 'hover:drop-shadow-[0_0_25px_rgba(255,215,0,0.8)]' : ''}
+          `} 
           onClick={() => {
-            if (isMascotActive) return; // Bảo vệ thêm 1 lớp bằng logic
+            if (isMascotActive) return;
             if (!user) handleMascotClick(); 
             else handleSignOut(); 
           }}
         >
-          {/* Hào quang vàng rực rỡ khi hover */}
-          <div className={`absolute inset-0 rounded-full blur-2xl transition-opacity duration-1000 ${
-            (isMascotActive || isMascotEvolved || user) ? 'bg-yellow-400 opacity-30 animate-pulse' : 'bg-green-500 opacity-10 group-hover:opacity-30'
+          {/* Hào quang lỏng (Liquid Glow) phía sau */}
+          <div className={`absolute inset-0 rounded-full blur-3xl transition-opacity duration-1000 ${
+            (isMascotActive || isMascotEvolved || user) 
+              ? 'bg-yellow-400/30 animate-pulse' 
+              : 'bg-green-500/10 group-hover:opacity-40'
           }`}></div>
           
           <img 
@@ -5884,15 +5890,15 @@ const App = () => {
             }}
             className={`object-contain transition-all duration-500 ease-in-out
               ${(isMascotActive || user) ? 'brightness-110' : ''}
-              /* Chỉ hiện hào quang và drop-shadow khi KHÔNG trong trạng thái active */
-              ${!isMascotActive ? 'hover:drop-shadow-[0_0_20px_rgba(255,215,0,0.9)] hover:brightness-110' : ''}
+              /* Thêm hiệu ứng sáng nhẹ cho ảnh khi group được hover */
+              group-hover:brightness-110
             `}
             onError={(e) => { e.target.src = "https://cdn-icons-png.flaticon.com/512/4712/4712035.png" }}
           />
 
-          {/* Nút Đăng xuất nhỏ (Chỉ hiện khi đã login và không đang chuyển cảnh) */}
+          {/* Nút Đăng xuất nhỏ */}
           {user && !isMascotActive && (
-            <div className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] px-2 py-1 rounded-full border border-red-400 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
+            <div className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] px-2 py-1 rounded-full border border-red-400 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-20">
               ĐĂNG XUẤT
             </div>
           )}
