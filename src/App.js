@@ -3101,15 +3101,7 @@ const App = () => {
     }, 1500);
   };
 
-  // 1. Hàm đóng Popup Login
-  const closeAuthModal = () => {
-    setShowAuthModal(false);
-    // Nếu chưa đăng nhập mà đóng popup, trả linh vật về Dạng 1
-    if (!user) {
-      setIsMascotEvolved(false);
-      setIsMascotActive(false);
-    }
-  };
+
 
   // 2. Hàm Đăng xuất
   const handleSignOut = () => {
@@ -3121,7 +3113,7 @@ const App = () => {
       });
     }
   };
-  
+
   useEffect(() => {
     if (isAuthReady && userId) {
       const gamesCollectionPath = `artifacts/${appId}/users/${userId}/games`;
@@ -5863,6 +5855,12 @@ const App = () => {
             `}
             onError={(e) => { e.target.src = "https://cdn-icons-png.flaticon.com/512/4712/4712035.png" }}
           />
+          {/* Hiển thị thêm icon nhỏ để người dùng biết là bấm vào để thoát khi đã login */}
+          {user && (
+            <div className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] px-2 py-1 rounded-full border border-red-400 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
+              ĐĂNG XUẤT
+            </div>
+          )}
         </div>
       </div>
 
