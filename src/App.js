@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { initializeApp } from "firebase/app";
+import { auth, db, googleProvider } from "./firebase";
+import { getAuth, signInWithPopup, onAuthStateChanged, signOut } from "firebase/auth";
 import './index.css';
-import {
-  getAuth,
-  onAuthStateChanged,
-} from "firebase/auth";
 import {
   getFirestore,
   doc,
@@ -806,7 +804,7 @@ const ApiSetupModal = ({
             }}
             placeholder="Nhập API Key của ngươi tại đây"
             className={`w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-purple-500 focus:border-purple-500`}
-            disabled={false} //binh
+            disabled={false}
           />
         </div>
         {apiMode === "userKey" && (
@@ -2684,7 +2682,8 @@ const App = () => {
   const [currentStory, setCurrentStory] = useState("");
   const [choices, setChoices] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [userId, setUserId] = useState("admin_test_user"); //binh
+  const [user, setUser] = useState(null); //binh
+  const [userId, setUserId] = useState(null);
   const [isAuthReady, setIsAuthReady] = useState(false);
   const [showApiModal, setShowApiModal] = useState(false);
   const [showUpdateLogModal, setShowUpdateLogModal] = useState(false);
@@ -2829,34 +2828,54 @@ const App = () => {
     checkVersion();
   }, [checkVersion]);
 
-  useEffect(() => {
+  useEffect(() => { //binh
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setUserId(user.uid);
+        setUser(user);
+        
         const userApiKey = await loadApiKey(user.uid);
-        if (userApiKey && !process.env.REACT_APP_GEMINI_API_KEY) { //binh
+        
+        if (userApiKey) {
           setApiKey(userApiKey);
           setInputApiKey(userApiKey);
           setApiMode("userKey");
           setApiKeyStatus({
             status: "Đã kết nối",
-            message: "API Key của bạn đã được tải từ lưu trữ.",
+            message: "Đã tải API Key cá nhân của bạn.",
             color: "text-green-500",
           });
-        } else {
+        } else if (process.env.REACT_APP_GEMINI_API_KEY) {
           setApiMode("defaultGemini");
           setApiKeyStatus({
             status: "Đang dùng Gemini AI Mặc Định",
-            message:
-              "Không cần API Key. Nội dung sẽ được tạo bởi AI của nền tảng.",
+            message: "Hệ thống đang chạy bằng tài nguyên mặc định.",
             color: "text-sky-400",
           });
         }
+      } else {
+        setUserId(null);
+        setUser(null);
+        setApiMode("defaultGemini");
       }
       setIsAuthReady(true);
     });
     return () => unsubscribe();
   }, []);
+
+  // 2. Hàm xử lý bấm nút Đăng nhập
+  const handleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+    } catch (error) {
+      console.error("Lỗi đăng nhập:", error.message);
+    }
+  };
+
+  // 3. Hàm Đăng xuất
+  const handleLogout = () => {
+    signOut(auth);
+  };
 
   useEffect(() => {
     if (isAuthReady && userId) {
@@ -5548,6 +5567,23 @@ const App = () => {
             </div>
           </div>
         </div>
+      )}
+      {user ? (
+        <div className="flex items-center gap-3">
+          <img src={user.photoURL} alt="Avatar" className="w-8 h-8 rounded-full border border-yellow-500" />
+          <span className="text-white text-sm">{user.displayName}</span>
+          <button onClick={handleLogout} className="text-xs text-gray-400 hover:text-white underline">
+            Thoát
+          </button>
+        </div>
+      ) : (
+        <button 
+          onClick={handleLogin}
+          className="bg-white text-black px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-gray-200"
+        >
+          <img src="https://www.gstatic.com/firebase/explore/google.svg" className="w-5 h-5" alt="G" />
+          Đăng nhập bằng Google
+        </button>
       )}
       <SuggestionsModal
         show={showSuggestionsModal.show}
