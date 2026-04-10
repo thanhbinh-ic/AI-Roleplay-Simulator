@@ -3167,8 +3167,8 @@ const App = () => {
   };
 
   const fetchGenericGeminiText = async (promptText) => {
-    const effectiveApiKey = apiMode === "defaultGemini" ? "" : apiKey;
-    if (apiMode === "userKey" && !effectiveApiKey) {
+    const effectiveApiKey = process.env.REACT_APP_GEMINI_API_KEY || apiKey;
+    if (!effectiveApiKey) {
       setModalMessage({
         show: true,
         title: "Lỗi API Key",
