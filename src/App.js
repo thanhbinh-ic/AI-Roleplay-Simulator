@@ -805,8 +805,8 @@ const ApiSetupModal = ({
               }
             }}
             placeholder="Nhập API Key của ngươi tại đây"
-            className={`w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-purple-500 focus:border-purple-500 ${apiMode !== "userKey" ? "opacity-50 cursor-not-allowed" : ""}`}
-            disabled={apiMode !== "userKey"}
+            className={`w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-purple-500 focus:border-purple-500`}
+            disabled={false} //binh
           />
         </div>
         {apiMode === "userKey" && (
@@ -3109,7 +3109,7 @@ const App = () => {
         },
       ],
     };
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.REACT_APP_GEMINI_API_KEY || apiKey}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${inputApiKey}`;
 
     try {
       const response = await fetch(apiUrl, {
@@ -3181,7 +3181,7 @@ const App = () => {
     const payload = {
       contents: [{ role: "user", parts: [{ text: promptText }] }],
     };
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.REACT_APP_GEMINI_API_KEY || apiKey}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${effectiveApiKey}`;
 
     try {
       const response = await fetch(apiUrl, {
@@ -3977,7 +3977,7 @@ const App = () => {
       contents: currentChatHistory,
       generationConfig: {},
     };
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.REACT_APP_GEMINI_API_KEY || apiKey}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${effectiveApiKey}`;
 
     try {
       const response = await fetch(apiUrl, {
