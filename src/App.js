@@ -2944,6 +2944,7 @@ const App = () => {
   const handleRegister = async () => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      alert("Đăng ký thành công!");
       console.log("Đại Ca đã tạo tài khoản mới:", userCredential.user.email);
     } catch (error) {
       alert("Lỗi đăng ký: " + error.message);
@@ -2957,10 +2958,7 @@ const App = () => {
       setShowAuthModal(false);
       console.log("Chào mừng Đại Ca trở lại:", userCredential.user.email);
     } catch (error) {
-      let errorMessage = "Sai email hoặc mật khẩu rồi Đại Ca ơi!";
-      if (error.code === 'auth/user-not-found') errorMessage = "Tài khoản này chưa tồn tại Đại Ca ạ!";
-      if (error.code === 'auth/wrong-password') errorMessage = "Mật khẩu sai rồi, Đại Ca nhớ lại xem!";
-      alert(errorMessage);
+      alert("Sai email hoặc mật khẩu rồi Đại Ca ơi!");
     }
   };
 
@@ -5658,7 +5656,7 @@ const App = () => {
       {user && (
         <button 
           onClick={() => signOut(auth)}
-          className="text-red-500 underline"
+          className="fixed right-0 top-1/2 -translate-y-1/2 bg-green-600 p-3 rounded-l-xl z-[100]"
         >
           Đăng xuất
         </button>
