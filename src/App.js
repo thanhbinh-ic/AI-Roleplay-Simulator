@@ -3086,7 +3086,6 @@ const App = () => {
     if (isMascotEvolved) {
       setIsLoginView(true);
       setShowAuthModal(true);
-      setErrorMsg("");
       return;
     }
 
