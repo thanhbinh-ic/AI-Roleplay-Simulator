@@ -5821,11 +5821,15 @@ const App = () => {
             <img 
               src={`${GITHUB_RES_URL}/${mascotId}_${(isMascotActive || isMascotEvolved) ? '2' : '1'}.gif`}
               alt="AI Mascot"
-              // Tăng kích thước từ w-24 lên w-28 cho to hơn 1 chút
-              className={`w-185 h-125 object-contain transition-all duration-300 ${
-                isMascotActive ? 'scale-125 brightness-110' : // Hiệu ứng lúc nhảy
-                isMascotEvolved ? 'brightness-105' : // Hiệu ứng sau khi tiến hóa
-                'hover:scale-110' // Hiệu ứng hover bình thường
+              style={{
+                // Dùng style trực tiếp để kiểm soát chính xác từng pixel theo ý Đại Ca
+                width: (isMascotActive || isMascotEvolved) ? '185px' : '100px',
+                height: (isMascotActive || isMascotEvolved) ? '115px' : '150px',
+              }}
+              className={`object-contain transition-all duration-500 ease-in-out ${
+                isMascotActive ? 'brightness-110 scale-110' : 
+                isMascotEvolved ? 'brightness-105' : 
+                'hover:scale-105'
               }`}
               onError={(e) => { e.target.src = "https://cdn-icons-png.flaticon.com/512/4712/4712035.png" }}
             />
