@@ -2722,6 +2722,12 @@ const App = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isLoginView, setIsLoginView] = useState(true);
 
+  // Linh vật
+  const [isMascotActive, setIsMascotActive] = useState(false);
+  const [mascotPos, setMascotPos] = useState({ bottom: 24, left: 24 }); // Vị trí mặc định
+  // Đại Ca có thể chọn random từ 0-4 như trong code gốc
+  const [mascotId] = useState(Math.floor(Math.random() * 5));
+
   const [apiMode, setApiMode] = useState("defaultGemini");
   const [apiKeyStatus, setApiKeyStatus] = useState({
     status: "Đang dùng Gemini AI Mặc Định",
@@ -3066,6 +3072,27 @@ const App = () => {
           alert("Lỗi đăng nhập: " + error.message);
       }
     }
+  };
+
+  // Linh vật
+  const handleMascotClick = () => {
+    if (isMascotActive) return; // Tránh bấm liên tục khi đang diễn hoạt
+
+    setIsMascotActive(true);
+    
+    // Hiệu ứng "bay lên" một chút khi bấm vào
+    setMascotPos(prev => ({ ...prev, bottom: prev.bottom + 40 }));
+
+    // Mở Modal đăng nhập ngay lập tức
+    setIsLoginView(true);
+    setShowAuthModal(true);
+    setErrorMsg("");
+
+    // Sau 1.5 giây thì con linh vật "đáp đất" và quay về trạng thái tĩnh
+    setTimeout(() => {
+      setMascotPos(prev => ({ ...prev, bottom: 24 }));
+      setIsMascotActive(false);
+    }, 1500);
   };
 
   useEffect(() => {
@@ -5759,48 +5786,45 @@ const App = () => {
           </div>
         </div>
       )}
-      <div className="fixed left-6 bottom-6 flex flex-col items-center gap-4 z-[100]">
-  
-        {/* Lời nhắc của AI (Tooltip suy nghĩ) */}
+      
+      
+      <div 
+        className="fixed z-[100] transition-all duration-500 ease-out"
+        style={{ 
+          left: `${mascotPos.left}px`, 
+          bottom: `${mascotPos.bottom}px` 
+        }}
+      >
+        {/* Lời nhắc của AI */}
         {aiHint && !user && (
-          <div className="absolute bottom-16 left-0 bg-white text-gray-900 text-xs font-bold px-3 py-2 rounded-2xl rounded-bl-none shadow-lg animate-bounce whitespace-nowrap border-2 border-green-500">
-              {aiHint}
-              <div className="absolute -bottom-2 left-2 w-0 h-0 border-t-8 border-t-white border-r-8 border-r-transparent"></div>
-            </div>
-          )}
+          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 bg-white text-gray-900 text-xs font-bold px-3 py-2 rounded-2xl shadow-xl animate-bounce whitespace-nowrap border-2 border-green-500">
+            {aiHint}
+            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0 border-t-8 border-t-white border-x-8 border-x-transparent"></div>
+          </div>
+        )}
 
-          {/* NÚT TÀI KHOẢN (KHI CHƯA ĐĂNG NHẬP) */}
-          {!user && (
-            <div className="relative">
-              {/* Hiệu ứng tỏa sáng rung động (Ping animation) */}
-              <span className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-75"></span>
-              
-              <button
-                onClick={() => {
-                  setIsLoginView(true);
-                  setShowAuthModal(true);
-                }}
-                className="relative w-14 h-14 bg-green-600 hover:bg-green-500 text-white rounded-full shadow-[0_0_20px_rgba(34,197,94,0.6)] border-2 border-green-400 flex items-center justify-center text-2xl transition-all hover:scale-110 active:scale-90 animate-infinite"
-                style={{ animation: 'reverb 2s infinite' }}
-              >
-                🔑
-              </button>
-            </div>
-          )}
-
-          {/* NÚT ĐĂNG XUẤT (KHI ĐÃ ĐĂNG NHẬP) */}
-          {user && (
-            <button
-              onClick={() => {
-                if(window.confirm("Đại Ca muốn rời mạng thật à?")) signOut(auth);
-              }}
-              className="w-12 h-12 bg-red-600 hover:bg-red-500 text-white rounded-full shadow-[0_0_15px_rgba(220,38,38,0.5)] border-2 border-red-400 flex items-center justify-center text-xl transition-all hover:rotate-12 active:scale-90"
-              title="Đăng xuất"
-            >
-              🚪
-            </button>
-          )}
-        </div>
+        {/* CON LINH VẬT */}
+        {!user ? (
+          <div className="relative group cursor-pointer" onClick={handleMascotClick}>
+            {/* Vòng tròn tỏa sáng phía sau */}
+            <div className={`absolute inset-0 bg-green-400 rounded-full blur-xl transition-opacity duration-300 ${isMascotActive ? 'opacity-60' : 'opacity-20 group-hover:opacity-40'}`}></div>
+            
+            <img 
+              src={`/res/mascot/${mascotId}_${isMascotActive ? '2' : '1'}.gif`}
+              alt="Mascot"
+              className={`w-20 h-20 object-contain transition-transform ${isMascotActive ? 'scale-125' : 'hover:scale-110'}`}
+            />
+          </div>
+        ) : (
+          /* Nút Đăng xuất nhỏ gọn bên cạnh linh vật khi đã login */
+          <button
+            onClick={() => { if(window.confirm("Đại Ca muốn rời mạng à?")) signOut(auth); }}
+            className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center border-2 border-red-400 shadow-lg hover:bg-red-500 transition-all"
+          >
+            🚪
+          </button>
+        )}
+      </div>
 
       <SuggestionsModal
         show={showSuggestionsModal.show}
