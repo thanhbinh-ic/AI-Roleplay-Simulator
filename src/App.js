@@ -3919,8 +3919,10 @@ const App = () => {
     isInitialCall = false,
     overrideGameId = null,
   ) => {
-    const effectiveApiKey = apiMode === "defaultGemini" ? "" : apiKey;
-    if (apiMode === "userKey" && !effectiveApiKey) {
+    const effectiveApiKey = apiMode === "defaultGemini" 
+    ? process.env.REACT_APP_GEMINI_API_KEY
+    : apiKey;
+    if (!effectiveApiKey) {
       setModalMessage({
         show: true,
         title: "Lỗi API Key",
