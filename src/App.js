@@ -2723,6 +2723,7 @@ const App = () => {
   const [isLoginView, setIsLoginView] = useState(true);
 
   // Linh vật
+  const GITHUB_RES_URL = "https://raw.githubusercontent.com/thanhbinh-ic/AI-Roleplay-Simulator/main/res/mascot";
   const [isMascotActive, setIsMascotActive] = useState(false);
   const [mascotPos, setMascotPos] = useState({ bottom: 24, left: 24 }); // Vị trí mặc định
   // Đại Ca có thể chọn random từ 0-4 như trong code gốc
@@ -3075,6 +3076,11 @@ const App = () => {
   };
 
   // Linh vật
+  const getMascotUrl = (id, type) => {
+    // type = 1 là tĩnh, type = 2 là hành động
+    return `${GITHUB_RES_URL}/${id}_${type}.gif`;
+  };
+
   const handleMascotClick = () => {
     if (isMascotActive) return; // Tránh bấm liên tục khi đang diễn hoạt
 
@@ -5805,23 +5811,27 @@ const App = () => {
         {/* CON LINH VẬT */}
         {!user ? (
           <div className="relative group cursor-pointer" onClick={handleMascotClick}>
-            {/* Vòng tròn tỏa sáng phía sau */}
-            <div className={`absolute inset-0 bg-green-400 rounded-full blur-xl transition-opacity duration-300 ${isMascotActive ? 'opacity-60' : 'opacity-20 group-hover:opacity-40'}`}></div>
-            
-            <img 
-              src={`/res/mascot/${mascotId}_${isMascotActive ? '2' : '1'}.gif`}
-              alt="Mascot"
-              className={`w-20 h-20 object-contain transition-transform ${isMascotActive ? 'scale-125' : 'hover:scale-110'}`}
-            />
-          </div>
-        ) : (
-          /* Nút Đăng xuất nhỏ gọn bên cạnh linh vật khi đã login */
-          <button
-            onClick={() => { if(window.confirm("Đại Ca muốn rời mạng à?")) signOut(auth); }}
-            className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center border-2 border-red-400 shadow-lg hover:bg-red-500 transition-all"
-          >
-            🚪
-          </button>
+          {/* Luôn có một vòng sáng xanh dịu phía sau con linh vật */}
+          <div className="absolute inset-0 bg-green-500 rounded-full blur-2xl opacity-20 group-hover:opacity-50 transition-all duration-500"></div>
+          
+          <img 
+            src={getMascotUrl(mascotId, isMascotActive ? 2 : 1)}
+            alt="AI Mascot"
+            className={`w-24 h-24 object-contain transition-all duration-300 ${
+              isMascotActive ? 'scale-125 brightness-110' : 'hover:scale-110'
+            }`}
+            // Phòng trường hợp ảnh lỗi thì hiện icon Robot thay thế
+            onError={(e) => { e.target.src = "https://cdn-icons-png.flaticon.com/512/4712/4712035.png" }}
+          />
+        </div>
+      ) : (
+        /* Nút Đăng xuất đỏ tròn bên cạnh */
+        <button
+          onClick={() => { if(window.confirm("Đại Ca muốn thoát à?")) signOut(auth); }}
+          className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center border-2 border-red-400 shadow-[0_0_15px_rgba(220,38,38,0.5)] hover:scale-110 transition-all"
+        >
+          <span className="text-xl">🚪</span>
+        </button>
         )}
       </div>
 
