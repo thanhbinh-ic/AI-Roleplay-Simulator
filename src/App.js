@@ -2684,7 +2684,7 @@ const App = () => {
   const [currentStory, setCurrentStory] = useState("");
   const [choices, setChoices] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState("admin_test_user"); //binh
   const [isAuthReady, setIsAuthReady] = useState(false);
   const [showApiModal, setShowApiModal] = useState(false);
   const [showUpdateLogModal, setShowUpdateLogModal] = useState(false);
@@ -3109,7 +3109,7 @@ const App = () => {
         },
       ],
     };
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key=${inputApiKey}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${inputApiKey}`;
 
     console.log("Giá trị Key đang dùng:", inputApiKey);
 
@@ -3183,7 +3183,7 @@ const App = () => {
     const payload = {
       contents: [{ role: "user", parts: [{ text: promptText }] }],
     };
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key=${effectiveApiKey}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${effectiveApiKey}`;
 
     console.log("Giá trị Key đang dùng:", effectiveApiKey);
 
@@ -3983,7 +3983,7 @@ const App = () => {
       contents: currentChatHistory,
       generationConfig: {},
     };
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key=${effectiveApiKey}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${effectiveApiKey}`;
 
     console.log("Giá trị Key đang dùng:", effectiveApiKey);
 
