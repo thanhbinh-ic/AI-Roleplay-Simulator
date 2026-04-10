@@ -2860,7 +2860,7 @@ const App = () => {
   useEffect(() => {
     if (!user) {
       const hints = [
-        "Chủ nhân ơi, Cici đợi bạn hơi lâu rồi đó nha!"
+        "Chủ nhân ơi, Cici đợi bạn hơi lâu rồi đó nha!",
         "Đăng nhập để không mất dữ liệu nhé chủ nhân!",
         "Lưu lại hành trình của chủ nhân ngay nào...",
         "Cici đang đợi chủ nhân đăng nhập đó!",
