@@ -5804,10 +5804,26 @@ const App = () => {
       >
         {/* Lời nhắc của AI (Chỉ hiện khi chưa đăng nhập) */}
         {aiHint && !user && (
-          <div className="absolute bottom-full right-0 mb-4 bg-white text-gray-900 text-xs font-bold px-3 py-2 rounded-2xl shadow-xl animate-bounce whitespace-nowrap border-2 border-green-500">
+        <div className="absolute bottom-full right-0 mb-4 z-[1000]">
+          {/* Bong bóng thoại dùng tỷ lệ linh hoạt */}
+          <div className="bg-white text-gray-900 text-[10px] sm:text-xs font-bold px-4 py-2 rounded-2xl shadow-xl border-2 border-green-500 
+                          /* Giới hạn rộng tối đa 40% chiều rộng màn hình, tối thiểu 120px và tối đa 250px */
+                          max-w-[40vw] min-w-[120px] lg:max-w-[250px]
+                          w-max break-words text-center leading-tight animate-bounce relative">
+            
             {aiHint}
-            <div className="absolute -bottom-2 right-5 w-0 h-0 border-t-8 border-t-white border-x-8 border-x-transparent"></div>
+            
+            {/* Cái đuôi bong bóng thoại */}
+            <div className="absolute -bottom-2 right-6 w-0 h-0 
+                            border-t-[10px] border-t-white 
+                            border-x-[8px] border-x-transparent"></div>
+            
+            {/* Viền cho cái đuôi */}
+            <div className="absolute -bottom-[11px] right-[23px] w-0 h-0 
+                            border-t-[11px] border-t-green-500 
+                            border-x-[9px] border-x-transparent -z-10"></div>
           </div>
+        </div>
         )}
 
         {/* // LINH VẬT ĐÓNG VAI TRÒ NÚT TÀI KHOẢN / ĐĂNG XUẤT */}
