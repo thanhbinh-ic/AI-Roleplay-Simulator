@@ -2860,11 +2860,36 @@ const App = () => {
   useEffect(() => {
     if (!user) {
       const hints = ["Đăng nhập để không mất dữ liệu nhé chủ nhân!", "Lưu lại hành trình của bạn ngay nào...", "AI đang đợi chủ nhân đăng nhập đó!"];
+      const hints = [
+        "Chủ nhân ơi, Cici đợi bạn hơi lâu rồi đó nha!"
+        "Đăng nhập để không mất dữ liệu nhé chủ nhân!",
+        "Lưu lại hành trình của chủ nhân ngay nào...",
+        "Cici đang đợi chủ nhân đăng nhập đó!",
+        "Đừng để những ý tưởng tuyệt vời bay mất!",
+        "Một tài khoản, vạn tiện ích. Kết nối nhé?",
+        "Lưu giữ dấu chân của Chủ nhân trên hành trình tri thức này.",
+        "Đăng nhập để 'mở khóa' toàn bộ sức mạnh của Cici nhé!",
+        "Dữ liệu của Chủ nhân là vô giá, hãy để Cici bảo vệ chúng.",
+        "Tiếp tục câu chuyện còn dang dở bằng cách đăng nhập nào.",
+        "Cici sẽ nhớ Chủ nhân lắm nếu không lưu lại thông tin đấy!",
+        "Cá nhân hóa trải nghiệm của riêng Chủ nhân chỉ với một bước đăng nhập.",
+        "Đừng để công sức nãy giờ 'đổ sông đổ biển' nhé!",
+        "Đăng nhập để đồng bộ dữ liệu trên mọi thiết bị nào.",
+        "Mọi thứ đã sẵn sàng, chỉ chờ chủ nhân xác nhận danh tính thôi!",
+        "Hãy để Cici trở thành trợ lý đắc lực nhất của riêng ngài.",
+        "Hành trình vạn dặm bắt đầu từ một bước đăng nhập.",
+        "Chủ nhân có muốn Cici ghi nhớ sở thích không?",
+        "Đăng nhập ngay để nhận được những gợi ý 'chuẩn gu' nhất.",
+        "Giữ cho mọi thứ ngăn nắp và an toàn bằng tài khoản nhaaa.",
+        "Đừng làm người lạ nữa, đăng nhập để hiểu nhau hơn!",
+        "Một lần chạm, lưu trọn khoảnh khắc.",
+        "Chào mừng Chủ nhân trở về! Đăng nhập để xem lại lịch sử nhé."
+      ];
       const interval = setInterval(() => {
         // Tỉ lệ 30% hiện thông báo mỗi 5 giây
-        if (Math.random() > 0.7) {
+        if (Math.random() > 0.5) {
           setAiHint(hints[Math.floor(Math.random() * hints.length)]);
-          setTimeout(() => setAiHint(""), 3000); // Hiện 3 giây rồi biến mất
+          setTimeout(() => setAiHint(""), 8000); // Hiện 8 giây rồi biến mất
         }
       }, 5000);
       return () => clearInterval(interval);
