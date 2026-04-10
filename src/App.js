@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { auth, db, googleProvider } from "./firebase";
+import { auth, db} from "./firebase";
 import { 
-  getAuth, 
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword, 
   signOut, 
@@ -2887,11 +2886,6 @@ const App = () => {
     } catch (error) {
       alert("Sai email hoặc mật khẩu rồi Đại Ca ơi!");
     }
-  };
-
-  // 3. Hàm Đăng xuất
-  const handleLogout = () => {
-    signOut(auth);
   };
 
   useEffect(() => {
