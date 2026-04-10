@@ -2815,7 +2815,17 @@ const App = () => {
 
   useEffect(() => { //binh
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
+      if (user) { 
+        console.log("%c ĐÃ ĐĂNG NHẬP THÀNH CÔNG! ", "background: #222; color: #bada55; font-size: 15px;");
+      
+        // In bảng thông tin User
+        console.table({
+          "Tên hiển thị": user.displayName,
+          "Email": user.email,
+          "UID (Dùng làm ID Firestore)": user.uid,
+          "Ảnh đại diện": user.photoURL
+        });
+
         setUserId(user.uid);
         setUser(user);
         
@@ -2842,6 +2852,7 @@ const App = () => {
         setUserId(null);
         setUser(null);
         setApiMode("defaultGemini");
+        console.log("Trạng thái: Chưa đăng nhập");
       }
       setIsAuthReady(true);
     });
