@@ -540,7 +540,7 @@ const changelogData = [
 function parseKeyValueString(kvString) {
   const result = {};
   const pairRegex =
-    /([\w\u00C0-\u017F\s]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|([\w\u00C0-\u017F\s\d.:\/+\-_%À-ỹ]+?(?=\s*,\s*[\w\u00C0-\u017F\s]+\s*=|$)))/gu;
+    /([\w\u00C0-\u017F\s]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|([\w\u00C0-\u017F\s\d.:/+\-_%À-ỹ]+?(?=\s*,\s*[\w\u00C0-\u017F\s]+\s*=|$)))/gu;
   let match;
   while ((match = pairRegex.exec(kvString)) !== null) {
     const key = match[1].trim();
@@ -2047,7 +2047,6 @@ const GameplayScreen = ({
   handleCustomAction,
   knowledgeBase,
   setShowCharacterInfoModal,
-  isProcessingAction,
   handleGenerateSuggestedActions,
   isGeneratingSuggestedActions,
   exportGameToJson,
@@ -2097,14 +2096,14 @@ const GameplayScreen = ({
       <div className="flex gap-1.5 self-end sm:self-center flex-wrap justify-end">
         <button
           onClick={() => setShowCharacterInfoModal(true)}
-          disabled={isLoading || isProcessingAction}
+          disabled={isLoading}
           className="bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 px-2.5 rounded-lg shadow-md transition-colors flex items-center text-xs disabled:bg-gray-500"
         >
           <CharacterSheetIcon /> Thông Tin
         </button>
         <button
           onClick={exportGameToJson}
-          disabled={isLoading || isProcessingAction}
+          disabled={isLoading}
           className="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-xs transition-all shadow-md disabled:bg-gray-500"
           title="Lưu dữ liệu ra máy tính"
         >
@@ -2126,7 +2125,7 @@ const GameplayScreen = ({
         </button>
         <button
           onClick={exportStoryToTxt}
-          disabled={isLoading || isProcessingAction}
+          disabled={isLoading}
           className="flex items-center justify-center px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs rounded-lg transition-all shadow-lg disabled:bg-gray-500"
           title="Xuất nội dung truyện (.txt)"
         >
@@ -2148,7 +2147,7 @@ const GameplayScreen = ({
         </button>
         <button
           onClick={restartGame}
-          disabled={isLoading || isProcessingAction}
+          disabled={isLoading}
           className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-2.5 rounded-lg shadow-md transition-colors flex items-center text-xs disabled:bg-gray-500"
         >
           <ArrowPathIcon className="w-4 h-4 mr-1" /> Bắt Đầu Lại
@@ -2300,7 +2299,7 @@ const GameplayScreen = ({
           </div>
         </div>
       ))}
-      {(isLoading || isProcessingAction) && currentStory === "" && (
+      {(isLoading) && currentStory === "" && (
         <div className="text-center py-10">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-400 mx-auto"></div>
           <p className="mt-3 text-purple-300">
@@ -2311,7 +2310,7 @@ const GameplayScreen = ({
       <div ref={storyEndRef} />
     </div>
 
-    {!(isLoading || isProcessingAction) && (
+    {!(isLoading) && (
       <div className="bg-gray-800 p-3 md:p-5 rounded-xl shadow-xl mt-auto">
         {choices.length > 0 && (
           <>
@@ -2353,7 +2352,7 @@ const GameplayScreen = ({
               />
               <button
                 onClick={() => handleCustomAction(customActionInput)}
-                disabled={isLoading || isProcessingAction}
+                disabled={isLoading}
                 className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-5 rounded-lg shadow-md hover:shadow-lg transition-colors disabled:bg-gray-500"
               >
                 Gửi
@@ -2365,7 +2364,7 @@ const GameplayScreen = ({
           <button
             onClick={handleGenerateSuggestedActions}
             disabled={
-              isGeneratingSuggestedActions || isLoading || isProcessingAction
+              isGeneratingSuggestedActions || isLoading
             }
             className="mt-3 w-full sm:w-auto p-3 bg-teal-600 hover:bg-teal-700 text-white rounded-lg shadow-md disabled:bg-gray-500 flex items-center justify-center"
             title="AI Gợi Ý Hành Động"
@@ -2394,7 +2393,7 @@ const GameplayScreen = ({
         )}
       </div>
     )}
-    {(isLoading || isProcessingAction) &&
+    {(isLoading) &&
       choices.length === 0 &&
       currentStory !== "" && (
         <div className="text-center py-5">
@@ -2747,7 +2746,6 @@ const App = () => {
     useState(false);
   const [showQuickLoreModal, setShowQuickLoreModal] = useState(false);
   const [quickLoreContent, setQuickLoreContent] = useState(null);
-  const [isProcessingAction, setIsProcessingAction] = useState(false);
   const [showDonationModal, setShowDonationModal] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -3930,7 +3928,7 @@ const App = () => {
       return;
     }
 
-    if (!isInitialCall && !isProcessingAction) setIsLoading(true);
+    if (!isInitialCall) setIsLoading(true);
     else if (isInitialCall) setIsLoading(true);
 
     let currentChatHistory = chatHistoryForGemini;
@@ -4082,7 +4080,6 @@ const App = () => {
         type: "error",
       });
     }
-    if (!isProcessingAction) setIsLoading(false);
   };
 
   const initializeGame = async () => {
@@ -5401,7 +5398,6 @@ const App = () => {
           handleCustomAction={handleCustomAction}
           knowledgeBase={knowledgeBase}
           setShowCharacterInfoModal={setShowCharacterInfoModal}
-          isProcessingAction={isProcessingAction}
           handleGenerateSuggestedActions={handleGenerateSuggestedActions}
           isGeneratingSuggestedActions={isGeneratingSuggestedActions}
           exportGameToJson={exportGameToJson}
