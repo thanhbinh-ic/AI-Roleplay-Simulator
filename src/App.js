@@ -3,7 +3,7 @@ import { auth, db} from "./firebase";
 import { 
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword, 
-  //binh signOut, 
+  signOut, 
   onAuthStateChanged 
 } from "firebase/auth";
 
