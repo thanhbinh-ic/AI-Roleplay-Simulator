@@ -5797,7 +5797,7 @@ const App = () => {
       <div 
         className="fixed z-[100] transition-all duration-500 ease-out"
         style={{ 
-          left: `${mascotPos.right}px`, 
+          right: `${mascotPos.right}px`, 
           bottom: `${mascotPos.bottom}px` 
         }}
       >
@@ -5805,7 +5805,7 @@ const App = () => {
         {aiHint && !user && (
           <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 bg-white text-gray-900 text-xs font-bold px-3 py-2 rounded-2xl shadow-xl animate-bounce whitespace-nowrap border-2 border-green-500">
             {aiHint}
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0 border-t-8 border-t-white border-x-8 border-x-transparent"></div>
+            <div className="absolute -bottom-2 right-5 w-0 h-0 border-t-8 border-t-white border-x-8 border-x-transparent"></div>
           </div>
         )}
 
