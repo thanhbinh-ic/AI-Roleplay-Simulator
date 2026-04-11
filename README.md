@@ -15,7 +15,7 @@
 
 Experience the simulator instantly or download the latest standalone version:
 
-[![Gemini Canvas](https://img.shields.io/badge/LIVE_DEMO-GEMINI_CANVAS-blue?style=for-the-badge&logo=google-gemini&logoColor=white)](https://gemini.google.com/share/54b7b8043dc2) 
+[![Gemini Canvas](https://img.shields.io/badge/LIVE_DEMO-GEMINI_CANVAS-blue?style=for-the-badge&logo=google-gemini&logoColor=white)](https://gemini.google.com/share/f772733ac3af) 
 [![Vercel App](https://img.shields.io/badge/LIVE_DEMO-VERCEL_APP-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://ai-roleplay-simulator.vercel.app/)
 [![Download Latest Version](https://img.shields.io/badge/DOWNLOAD-LATEST_RELEASE-success?style=for-the-badge&logo=github)](https://github.com/thanhbinh-ic/AI-Roleplay-Simulator/releases/latest)
 
