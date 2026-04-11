@@ -15,8 +15,12 @@
 
 Experience the simulator instantly or download the latest standalone version:
 
-[![Try It Out](https://img.shields.io/badge/TRY_IT_OUT-LIVE_DEMO-blue?style=for-the-badge&logo=google-gemini&logoColor=white)](https://gemini.google.com/share/54b7b8043dc2)
+[![Gemini Canvas](https://img.shields.io/badge/LIVE_DEMO-GEMINI_CANVAS-blue?style=for-the-badge&logo=google-gemini&logoColor=white)](https://gemini.google.com/share/54b7b8043dc2) 
+[![Vercel App](https://img.shields.io/badge/LIVE_DEMO-VERCEL_APP-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://ai-roleplay-simulator.vercel.app/)
 [![Download Latest Version](https://img.shields.io/badge/DOWNLOAD-LATEST_RELEASE-success?style=for-the-badge&logo=github)](https://github.com/thanhbinh-ic/AI-Roleplay-Simulator/releases/latest)
+
+> [!IMPORTANT]
+> **API Key Requirement:** If you are deploying or using the **Vercel version**, please ensure you have configured a valid `REACT_APP_GEMINI_API_KEY`. Using the default or shared keys may lead to **Quota Limit Errors** due to high traffic.
 
 ---
 
